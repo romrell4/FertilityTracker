@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_entry"
+        android:title="@string/bottom_nav_entry"
+        android:icon="@drawable/ic_outline_create_24" />
+
+    <item
+        android:id="@+id/bottom_nav_chart"
+        android:title="@string/bottom_nav_chart"
+        android:icon="@drawable/ic_outline_show_chart_24" />
+</menu>

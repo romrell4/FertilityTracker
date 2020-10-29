@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Fertility Tracker</string>
+    <string name="bottom_nav_entry">Add Entries</string>
+    <string name="bottom_nav_chart">View Chart</string>
 </resources>
