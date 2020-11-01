@@ -3,4 +3,8 @@
     <string name="bottom_nav_entry">Add Entries</string>
     <string name="bottom_nav_chart">View Chart</string>
     <string name="symptom_entry_header">My Symptoms</string>
+    <string name="sensations_button_title">Sensations</string>
+    <string name="mucus_button_title">Mucus</string>
+    <string name="bleeding_button_title">Bleeding</string>
+    <string name="sex_button_title">Sex</string>
 </resources>
