@@ -2,14 +2,13 @@ package com.romrell4.fertility_tracker.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.romrell4.fertility_tracker.databinding.FragmentDataEntryBinding
-import com.romrell4.fertility_tracker.support.OnSwipeTouchListener
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewModel
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,11 +46,11 @@ class DataEntryFragment : Fragment() {
         }
 
         binding.previousDateView.setOnClickListener {
-            viewModel.previousDate()
+            viewModel.selectPreviousDate()
         }
 
         binding.nextDateView.setOnClickListener {
-            viewModel.nextDate()
+            viewModel.selectNextDate()
         }
     }
 

@@ -42,11 +42,11 @@ class DataEntryViewModel(
         )
     }
 
-    fun previousDate() {
+    fun selectPreviousDate() {
         stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.minusDays(1)))
     }
 
-    fun nextDate() {
+    fun selectNextDate() {
         stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.plusDays(1)))
     }
 }
