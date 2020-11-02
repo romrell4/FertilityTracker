@@ -9,4 +9,8 @@
     <string name="sex_button_title">Sex</string>
     <string name="alert_positive_text">Select</string>
     <string name="instructions_text">Tap a button to track that symptom</string>
+    <string name="mucus_consistency_label">Consistency</string>
+    <string name="mucus_color_label">Color</string>
+    <string name="mucus_occurrences_label">Daily Occurrences</string>
+    <string name="mucus_positive_text">Save</string>
 </resources>

@@ -57,6 +57,12 @@ class DataEntryViewModel(
             stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(sensation = sensation))
         }
     }
+
+    fun saveMucus(mucus: SymptomEntry.Mucus) {
+        stateFlow.value.let {
+            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(mucus = mucus))
+        }
+    }
 }
 
 @Parcelize

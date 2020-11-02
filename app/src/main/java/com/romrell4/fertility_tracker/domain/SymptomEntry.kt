@@ -10,8 +10,6 @@ data class SymptomEntry(
     val id: UUID = UUID.randomUUID(),
     val date: LocalDate,
     val sensation: Sensation? = null,
-    //TODO: Necessary?
-    val subSensation: SubSensation? = null,
     val mucus: Mucus? = null,
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
@@ -23,41 +21,27 @@ data class SymptomEntry(
         LUBRICATIVE("Lubricative")
     }
 
-    enum class SubSensation {
-        DRY,
-        DAMP,
-        WET,
-        SHINY;
-
-        companion object {
-            fun getSubSensations(sensation: Sensation) = when (sensation) {
-                Sensation.DRY, Sensation.SMOOTH -> listOf(DRY, DAMP, WET, SHINY)
-                Sensation.LUBRICATIVE -> listOf(DAMP, WET, SHINY)
-            }
-        }
-    }
-
     @Parcelize
     data class Mucus(
         val consistency: Consistency? = null,
         val color: Color? = null,
         val dailyOccurrences: Int = 1
-    ) : Parcelable
+    ) : Parcelable {
+        enum class Consistency(val displayText: String) {
+            STICKY("Sticky"),
+            TACKY("Tacky"),
+            STRETCHY("Stretchy"),
+            PASTY("Pasty"),
+            GUMMY_GLUEY("Gummy/Gluey")
+        }
 
-    enum class Consistency {
-        STICKY,
-        TACKY,
-        STRETCHY,
-        PASTY,
-        GUMMY_GLUEY
-    }
-
-    enum class Color {
-        CLOUDY,
-        CLEAR,
-        RED_PINK,
-        BROWN,
-        YELLOW
+        enum class Color(val displayText: String) {
+            CLOUDY("Cloudy"),
+            CLEAR("Clear"),
+            RED_PINK("Red/Pink"),
+            BROWN("Brown"),
+            YELLOW("Yellow")
+        }
     }
 
     enum class Bleeding {

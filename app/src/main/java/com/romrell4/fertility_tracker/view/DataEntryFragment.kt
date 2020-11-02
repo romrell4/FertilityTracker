@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +23,7 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment : Fragment() {
+class DataEntryFragment : Fragment(), MucusDialogCallback {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }
@@ -73,15 +72,14 @@ class DataEntryFragment : Fragment() {
         }
 
         binding.mucusButton.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setView(R.layout.mucus_dialog)
-                .show()
+            MucusDialog.newInstance().also {
+                it.setTargetFragment(this, 0)
+            }.show(parentFragmentManager, null)
         }
     }
 
-    private fun showSymptomDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .show()
+    override fun mucusSaved(mucus: SymptomEntry.Mucus) {
+        viewModel.saveMucus(mucus)
     }
 
     private fun render(viewState: DataEntryViewState) {
@@ -100,9 +98,4 @@ class DataEntryFragment : Fragment() {
         setupSymptomButton(binding.bleedingButton, viewState.bleeding)
         setupSymptomButton(binding.sexButton, viewState.sex)
     }
-
-    //TODO: Needed?
-    private fun DataEntryViewState.toButtonData(): List<Pair<MaterialButton, Any?>> = listOf(
-        binding.sensationsButton to sensation
-    )
 }
