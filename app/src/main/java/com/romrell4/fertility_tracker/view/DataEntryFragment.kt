@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.FragmentDataEntryBinding
+import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewModel
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,11 +57,52 @@ class DataEntryFragment : Fragment() {
         binding.nextDateView.setOnClickListener {
             viewModel.selectNextDate()
         }
+
+        binding.sensationsButton.setOnClickListener {
+            val sensations = SymptomEntry.Sensation.values()
+            var selectedSensation: SymptomEntry.Sensation = sensations.first()
+            MaterialAlertDialogBuilder(requireContext())
+                .setSingleChoiceItems(sensations.map { it.displayText }.toTypedArray(), 0) { _, i ->
+                    selectedSensation = sensations[i]
+                }
+                .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
+                    viewModel.selectSensation(selectedSensation)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+
+        binding.mucusButton.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setView(R.layout.mucus_dialog)
+                .show()
+        }
+    }
+
+    private fun showSymptomDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .show()
     }
 
     private fun render(viewState: DataEntryViewState) {
+        //Date
         binding.currentDateView.text = DATE_FORMATTER.format(viewState.currentDate)
         binding.previousDateView.text = DATE_FORMATTER.format(viewState.previousDate)
         binding.nextDateView.text = DATE_FORMATTER.format(viewState.nextDate)
+
+        fun setupSymptomButton(button: MaterialButton, symptom: Any?) {
+            button.setBackgroundColor(resources.getColor(if (symptom == null) R.color.gray else R.color.purple, null))
+        }
+
+        //Buttons
+        setupSymptomButton(binding.sensationsButton, viewState.sensation)
+        setupSymptomButton(binding.mucusButton, viewState.mucus)
+        setupSymptomButton(binding.bleedingButton, viewState.bleeding)
+        setupSymptomButton(binding.sexButton, viewState.sex)
     }
+
+    //TODO: Needed?
+    private fun DataEntryViewState.toButtonData(): List<Pair<MaterialButton, Any?>> = listOf(
+        binding.sensationsButton to sensation
+    )
 }

@@ -10,16 +10,17 @@ data class SymptomEntry(
     val id: UUID = UUID.randomUUID(),
     val date: LocalDate,
     val sensation: Sensation? = null,
+    //TODO: Necessary?
     val subSensation: SubSensation? = null,
     val mucus: Mucus? = null,
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
     val notes: String? = null
 ) : Parcelable {
-    enum class Sensation {
-        DRY,
-        SMOOTH,
-        LUBRICATIVE
+    enum class Sensation(val displayText: String) {
+        DRY("Dry"),
+        SMOOTH("Smooth"),
+        LUBRICATIVE("Lubricative")
     }
 
     enum class SubSensation {

@@ -43,11 +43,19 @@ class DataEntryViewModel(
     }
 
     fun selectPreviousDate() {
+        //TODO: Look up previous data
         stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.minusDays(1)))
     }
 
     fun selectNextDate() {
+        //TODO: Look up next data
         stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.plusDays(1)))
+    }
+
+    fun selectSensation(sensation: SymptomEntry.Sensation) {
+        stateFlow.value.let {
+            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(sensation = sensation))
+        }
     }
 }
 
@@ -56,12 +64,20 @@ data class DataEntryState(
     val symptomEntry: SymptomEntry
 ) : Parcelable {
     fun toViewState() = DataEntryViewState(
-        currentDate = symptomEntry.date
+        currentDate = symptomEntry.date,
+        sensation = symptomEntry.sensation,
+        mucus = symptomEntry.mucus,
+        bleeding = symptomEntry.bleeding,
+        sex = symptomEntry.sex
     )
 }
 
 data class DataEntryViewState(
-    val currentDate: LocalDate
+    val currentDate: LocalDate,
+    val sensation: SymptomEntry.Sensation?,
+    val mucus: SymptomEntry.Mucus?,
+    val bleeding: SymptomEntry.Bleeding?,
+    val sex: SymptomEntry.Sex?
 ) {
     val previousDate: LocalDate
         get() = currentDate.minusDays(1)

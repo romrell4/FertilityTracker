@@ -7,4 +7,6 @@
     <string name="mucus_button_title">Mucus</string>
     <string name="bleeding_button_title">Bleeding</string>
     <string name="sex_button_title">Sex</string>
+    <string name="alert_positive_text">Select</string>
+    <string name="instructions_text">Tap a button to track that symptom</string>
 </resources>
