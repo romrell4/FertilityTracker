@@ -28,6 +28,7 @@ class DataEntryViewModel @JvmOverloads constructor(
     }
 
     private val stateFlow: MutableStateFlow<DataEntryState> = MutableStateFlow(
+        //If there is something saved in their state, use that first. Otherwise, look up from the repo. Finally create a blank
         savedStateHandle.get(STATE_KEY) ?: DataEntryState(
             symptomEntry = findSymptomEntryUseCase.execute(LocalDate.now())
                 ?: SymptomEntry(date = LocalDate.now())
