@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.romrell4.fertility_tracker.domain.SymptomEntry
+import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
 import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
 import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
@@ -18,7 +19,8 @@ private const val STATE_KEY = "STATE_KEY"
 class DataEntryViewModel @JvmOverloads constructor(
     application: Application,
     private val savedStateHandle: SavedStateHandle,
-    private val saveEntryUseCase: SaveSymptomEntryUseCase = DI.instance.saveSymptomEntryUseCase
+    private val saveEntryUseCase: SaveSymptomEntryUseCase = DI.instance.saveSymptomEntryUseCase,
+    private val findSymptomEntryUseCase: FindSymptomEntryUseCase = DI.instance.findSymptomEntryUseCase
 ) : AndroidViewModel(application) {
 
     val viewStateFlow: Flow<DataEntryViewState> by lazy {
@@ -27,9 +29,8 @@ class DataEntryViewModel @JvmOverloads constructor(
 
     private val stateFlow: MutableStateFlow<DataEntryState> = MutableStateFlow(
         savedStateHandle.get(STATE_KEY) ?: DataEntryState(
-            symptomEntry = SymptomEntry(
-                date = LocalDate.now()
-            )
+            symptomEntry = findSymptomEntryUseCase.execute(LocalDate.now())
+                ?: SymptomEntry(date = LocalDate.now())
         )
     ).also {
         //Whenever this changes, updated the saved state
@@ -39,32 +40,40 @@ class DataEntryViewModel @JvmOverloads constructor(
     }
 
     fun selectPreviousDate() {
-        //TODO: Look up previous data
-        stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.minusDays(1)))
+        val previousDate = stateFlow.value.symptomEntry.date.minusDays(1)
+        selectDate(previousDate)
     }
 
     fun selectNextDate() {
-        //TODO: Look up next data
-        stateFlow.value = DataEntryState(SymptomEntry(date = stateFlow.value.symptomEntry.date.plusDays(1)))
+        val nextDate = stateFlow.value.symptomEntry.date.plusDays(1)
+        selectDate(nextDate)
+    }
+
+    private fun selectDate(date: LocalDate) {
+        stateFlow.value = DataEntryState(
+            //If we can't find one, create a new one for that date
+            symptomEntry = findSymptomEntryUseCase.execute(date) ?: SymptomEntry(date = date)
+        )
     }
 
     fun selectSensation(sensation: SymptomEntry.Sensation) {
-        updateSymptomEntry(stateFlow.value.symptomEntry.copy(sensation = sensation))
+        updateSymptomEntry { it.copy(sensation = sensation) }
     }
 
     fun saveMucus(mucus: SymptomEntry.Mucus) {
-        updateSymptomEntry(stateFlow.value.symptomEntry.copy(mucus = mucus))
+        updateSymptomEntry { it.copy(mucus = mucus) }
     }
 
     fun selectBleeding(bleeding: SymptomEntry.Bleeding) {
-        updateSymptomEntry(stateFlow.value.symptomEntry.copy(bleeding = bleeding))
+        updateSymptomEntry { it.copy(bleeding = bleeding) }
     }
 
     fun selectSex(sex: SymptomEntry.Sex) {
-        updateSymptomEntry(stateFlow.value.symptomEntry.copy(sex = sex))
+        updateSymptomEntry { it.copy(sex = sex) }
     }
 
-    private fun updateSymptomEntry(symptomEntry: SymptomEntry) {
+    private fun updateSymptomEntry(symptomEntryBlock: (SymptomEntry) -> SymptomEntry) {
+        val symptomEntry = symptomEntryBlock(stateFlow.value.symptomEntry)
         stateFlow.value = stateFlow.value.copy(symptomEntry = symptomEntry)
         saveEntryUseCase.execute(symptomEntry)
     }

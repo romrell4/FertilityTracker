@@ -9,6 +9,7 @@ import java.time.LocalDate
 
 interface FertilityTrackingRepository {
     fun saveSymptomEntry(symptomEntry: SymptomEntry)
+    fun getAllSymptomEntries(): Map<LocalDate, SymptomEntry>
 }
 
 private const val SP_NAME = "FertilityTracking"
@@ -32,7 +33,7 @@ class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepos
         }
     }
 
-    private fun getAllSymptomEntries(): Map<LocalDate, SymptomEntry> {
+    override fun getAllSymptomEntries(): Map<LocalDate, SymptomEntry> {
         return sharedPrefs.getString(SP_SYMPTOM_ENTRIES_KEY, null)?.let {
             objectMapper.readValue(it)
         } ?: emptyMap()
