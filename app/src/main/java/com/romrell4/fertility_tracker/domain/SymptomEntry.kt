@@ -7,7 +7,6 @@ import java.util.*
 
 @Parcelize
 data class SymptomEntry(
-    val id: UUID = UUID.randomUUID(),
     val date: LocalDate,
     val sensation: Sensation? = null,
     val mucus: Mucus? = null,

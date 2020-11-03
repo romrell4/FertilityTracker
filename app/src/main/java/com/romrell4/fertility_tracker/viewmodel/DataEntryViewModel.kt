@@ -4,42 +4,38 @@ import android.app.Application
 import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.romrell4.fertility_tracker.domain.SymptomEntry
-import com.romrell4.fertility_tracker.repo.FertilityTrackingRepositoryImpl
 import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
-import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCaseImpl
+import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate
-import java.util.*
 
 private const val STATE_KEY = "STATE_KEY"
 
 @ExperimentalCoroutinesApi
-class DataEntryViewModel(
+class DataEntryViewModel @JvmOverloads constructor(
     application: Application,
-    val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val saveEntryUseCase: SaveSymptomEntryUseCase = DI.instance.saveSymptomEntryUseCase
 ) : AndroidViewModel(application) {
-    private lateinit var saveEntryUseCase: SaveSymptomEntryUseCase
 
     val viewStateFlow: Flow<DataEntryViewState> by lazy {
-        stateFlow
-            .onEach { savedStateHandle.set(STATE_KEY, it) }
-            .map { it.toViewState() }
-            .distinctUntilChanged()
+        stateFlow.map { it.toViewState() }.distinctUntilChanged()
     }
 
-    private val stateFlow: MutableStateFlow<DataEntryState> = run {
-        val previous = savedStateHandle.get<DataEntryState>(STATE_KEY)
-        MutableStateFlow(
-            previous ?: DataEntryState(
-                symptomEntry = SymptomEntry(
-                    date = LocalDate.now()
-                )
+    private val stateFlow: MutableStateFlow<DataEntryState> = MutableStateFlow(
+        savedStateHandle.get(STATE_KEY) ?: DataEntryState(
+            symptomEntry = SymptomEntry(
+                date = LocalDate.now()
             )
         )
+    ).also {
+        //Whenever this changes, updated the saved state
+        it.onEach { state ->
+            savedStateHandle.set(STATE_KEY, state)
+        }
     }
 
     fun selectPreviousDate() {
@@ -53,27 +49,24 @@ class DataEntryViewModel(
     }
 
     fun selectSensation(sensation: SymptomEntry.Sensation) {
-        stateFlow.value.let {
-            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(sensation = sensation))
-        }
+        updateSymptomEntry(stateFlow.value.symptomEntry.copy(sensation = sensation))
     }
 
     fun saveMucus(mucus: SymptomEntry.Mucus) {
-        stateFlow.value.let {
-            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(mucus = mucus))
-        }
+        updateSymptomEntry(stateFlow.value.symptomEntry.copy(mucus = mucus))
     }
 
     fun selectBleeding(bleeding: SymptomEntry.Bleeding) {
-        stateFlow.value.let {
-            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(bleeding = bleeding))
-        }
+        updateSymptomEntry(stateFlow.value.symptomEntry.copy(bleeding = bleeding))
     }
 
     fun selectSex(sex: SymptomEntry.Sex) {
-        stateFlow.value.let {
-            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(sex = sex))
-        }
+        updateSymptomEntry(stateFlow.value.symptomEntry.copy(sex = sex))
+    }
+
+    private fun updateSymptomEntry(symptomEntry: SymptomEntry) {
+        stateFlow.value = stateFlow.value.copy(symptomEntry = symptomEntry)
+        saveEntryUseCase.execute(symptomEntry)
     }
 }
 
