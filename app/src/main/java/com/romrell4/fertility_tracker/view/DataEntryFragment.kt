@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -49,13 +50,12 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
             }
         }
 
-        binding.previousDateView.setOnClickListener {
-            viewModel.selectPreviousDate()
-        }
+        //Dates
+        binding.previousDateView.setOnClickListener { viewModel.selectPreviousDate() }
+        binding.nextDateView.setOnClickListener { viewModel.selectNextDate() }
 
-        binding.nextDateView.setOnClickListener {
-            viewModel.selectNextDate()
-        }
+        //Notes
+        binding.notesText.addTextChangedListener { viewModel.saveNotes(it?.toString()) }
     }
 
     override fun mucusSaved(mucus: SymptomEntry.Mucus) {
@@ -68,37 +68,15 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         binding.previousDateView.text = DATE_FORMATTER.format(viewState.previousDate)
         binding.nextDateView.text = DATE_FORMATTER.format(viewState.nextDate)
 
-        fun setupSymptomButton(button: MaterialButton, symptom: Any?) {
-            button.setBackgroundColor(resources.getColor(if (symptom == null) R.color.gray else R.color.purple, null))
-        }
-
         //Buttons
-        setupSymptomButton(binding.sensationsButton, viewState.sensation)
-        setupSymptomButton(binding.mucusButton, viewState.mucus)
-        setupSymptomButton(binding.bleedingButton, viewState.bleeding)
-        setupSymptomButton(binding.sexButton, viewState.sex)
-
-        fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
-            values: Array<T>,
-            currentValue: T?,
-            viewModelFunction: (T) -> Unit
-        ) {
-            setOnClickListener {
-                var selectedValue = currentValue ?: values.first()
-                MaterialAlertDialogBuilder(requireContext())
-                    .setSingleChoiceItems(
-                        values.map { it.displayText }.toTypedArray(),
-                        values.indexOf(selectedValue)
-                    ) { _, i ->
-                        selectedValue = values[i]
-                    }
-                    .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
-                        viewModelFunction(selectedValue)
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-            }
+        fun MaterialButton.setupSymptomButton(symptom: Any?) {
+            setBackgroundColor(resources.getColor(if (symptom == null) R.color.gray else R.color.purple, null))
         }
+
+        binding.sensationsButton.setupSymptomButton(viewState.sensation)
+        binding.mucusButton.setupSymptomButton(viewState.mucus)
+        binding.bleedingButton.setupSymptomButton(viewState.bleeding)
+        binding.sexButton.setupSymptomButton(viewState.sex)
 
         binding.sensationsButton.setUpRadioDialogListener(
             values = SymptomEntry.Sensation.values(),
@@ -115,11 +93,39 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
             currentValue = viewState.sex,
             viewModelFunction = viewModel::selectSex
         )
-
         binding.mucusButton.setOnClickListener {
             MucusDialog.newInstance(viewState.mucus).also {
                 it.setTargetFragment(this, 0)
             }.show(parentFragmentManager, null)
+        }
+
+        //Notes
+        if (binding.notesText.text.toString() != viewState.notes) {
+            //If the notes are out of date, update them, and set the cursor to the end of the text
+            binding.notesText.setText(viewState.notes)
+            binding.notesText.setSelection(viewState.notes?.length ?: 0)
+        }
+    }
+
+    private fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
+        values: Array<T>,
+        currentValue: T?,
+        viewModelFunction: (T) -> Unit
+    ) {
+        setOnClickListener {
+            var selectedValue = currentValue ?: values.first()
+            MaterialAlertDialogBuilder(requireContext())
+                .setSingleChoiceItems(
+                    values.map { it.displayText }.toTypedArray(),
+                    values.indexOf(selectedValue)
+                ) { _, i ->
+                    selectedValue = values[i]
+                }
+                .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
+                    viewModelFunction(selectedValue)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
         }
     }
 }

@@ -81,9 +81,9 @@
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:rowCount="2"
-        app:layout_constraintTop_toBottomOf="@id/dateWrapper"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/dateWrapper">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sensationsButton"
@@ -114,14 +114,16 @@
             android:text="@string/sex_button_title" />
     </GridLayout>
 
-    <TextView
-        android:id="@+id/instructionsText"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/notesText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/instructions_text"
-        android:textColor="@color/light_text"
-        android:textSize="14sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/notes_hint"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textCapSentences"
+        android:maxLines="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

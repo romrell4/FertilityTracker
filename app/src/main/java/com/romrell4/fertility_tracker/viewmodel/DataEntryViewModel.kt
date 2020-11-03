@@ -4,13 +4,17 @@ import android.app.Application
 import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
 import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
 import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 private const val STATE_KEY = "STATE_KEY"
@@ -73,10 +77,16 @@ class DataEntryViewModel @JvmOverloads constructor(
         updateSymptomEntry { it.copy(sex = sex) }
     }
 
+    fun saveNotes(notes: String?) {
+        updateSymptomEntry { it.copy(notes = notes) }
+    }
+
     private fun updateSymptomEntry(symptomEntryBlock: (SymptomEntry) -> SymptomEntry) {
         val symptomEntry = symptomEntryBlock(stateFlow.value.symptomEntry)
         stateFlow.value = stateFlow.value.copy(symptomEntry = symptomEntry)
-        saveEntryUseCase.execute(symptomEntry)
+        viewModelScope.launch(Dispatchers.IO) {
+            saveEntryUseCase.execute(symptomEntry)
+        }
     }
 }
 
@@ -89,7 +99,8 @@ data class DataEntryState(
         sensation = symptomEntry.sensation,
         mucus = symptomEntry.mucus,
         bleeding = symptomEntry.bleeding,
-        sex = symptomEntry.sex
+        sex = symptomEntry.sex,
+        notes = symptomEntry.notes
     )
 }
 
@@ -98,7 +109,8 @@ data class DataEntryViewState(
     val sensation: SymptomEntry.Sensation?,
     val mucus: SymptomEntry.Mucus?,
     val bleeding: SymptomEntry.Bleeding?,
-    val sex: SymptomEntry.Sex?
+    val sex: SymptomEntry.Sex?,
+    val notes: String?
 ) {
     val previousDate: LocalDate
         get() = currentDate.minusDays(1)
