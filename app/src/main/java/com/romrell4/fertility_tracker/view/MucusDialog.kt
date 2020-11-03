@@ -3,11 +3,15 @@ package com.romrell4.fertility_tracker.view
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.MucusDialogBinding
 import com.romrell4.fertility_tracker.domain.SymptomEntry
+
+private const val MUCUS_KEY = "Mucus"
 
 interface MucusDialogCallback {
     fun mucusSaved(mucus: SymptomEntry.Mucus)
@@ -19,46 +23,47 @@ class MucusDialog private constructor() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = MucusDialogBinding.inflate(layoutInflater)
 
-        //Consistency
-        SymptomEntry.Mucus.Consistency.values().map {
-            RadioButton(context).apply {
-                text = it.displayText
-                tag = it
+        fun <T : SymptomEntry.Symptom> setupRadioList(values: Array<T>, currentValue: T?, radioGroup: RadioGroup) {
+            values.map {
+                RadioButton(context).apply {
+                    text = it.displayText
+                    tag = it
+                }
+            }.also { buttons ->
+                buttons.forEach {
+                    radioGroup.addView(it)
+                }
+                //Select the one matching the current selection
+                buttons.firstOrNull { it.tag == currentValue }?.let {
+                    radioGroup.check(it.id)
+                }
             }
-        }.forEach {
-            binding.consistencyRadioGroup.addView(it)
         }
 
-        //Color
-        SymptomEntry.Mucus.Color.values().map {
-            RadioButton(context).apply {
-                text = it.displayText
-                tag = it
-            }
-        }.forEach {
-            binding.colorRadioGroup.addView(it)
-        }
+        val currentMucus = arguments?.getParcelable<SymptomEntry.Mucus>(MUCUS_KEY)
+        setupRadioList(SymptomEntry.Mucus.Consistency.values(), currentMucus?.consistency, binding.consistencyRadioGroup)
+        setupRadioList(SymptomEntry.Mucus.Color.values(), currentMucus?.color, binding.colorRadioGroup)
 
         //Occurrences
         binding.occurrencesPicker.apply {
             min = 1
+            value = currentMucus?.dailyOccurrences ?: min
         }
 
         return MaterialAlertDialogBuilder(requireContext())
             .setView(binding.root)
             .setPositiveButton(R.string.mucus_positive_text) { _, _ ->
-                val consistency = binding.consistencyRadioGroup.findViewById<RadioButton>(
-                    binding.consistencyRadioGroup.checkedRadioButtonId
-                )?.tag as? SymptomEntry.Mucus.Consistency
-
-                val color = binding.colorRadioGroup.findViewById<RadioButton>(
-                    binding.consistencyRadioGroup.checkedRadioButtonId
-                )?.tag as? SymptomEntry.Mucus.Color
+                @Suppress("UNCHECKED_CAST")
+                fun <T> getSymptom(radioGroup: RadioGroup): T? {
+                    return radioGroup.findViewById<RadioButton>(
+                        radioGroup.checkedRadioButtonId
+                    )?.tag as? T
+                }
 
                 (targetFragment as? MucusDialogCallback)?.mucusSaved(
                     SymptomEntry.Mucus(
-                        consistency = consistency,
-                        color = color,
+                        consistency = getSymptom<SymptomEntry.Mucus.Consistency>(binding.consistencyRadioGroup),
+                        color = getSymptom<SymptomEntry.Mucus.Color>(binding.colorRadioGroup),
                         dailyOccurrences = binding.occurrencesPicker.value
                     )
                 )
@@ -68,12 +73,10 @@ class MucusDialog private constructor() : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(): MucusDialog {
-            val args = Bundle()
-
-            val fragment = MucusDialog()
-            fragment.arguments = args
-            return fragment
+        fun newInstance(mucus: SymptomEntry.Mucus?): MucusDialog {
+            return MucusDialog().apply {
+                arguments = bundleOf(MUCUS_KEY to mucus)
+            }
         }
     }
 }

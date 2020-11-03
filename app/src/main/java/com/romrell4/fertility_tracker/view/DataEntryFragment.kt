@@ -56,26 +56,6 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         binding.nextDateView.setOnClickListener {
             viewModel.selectNextDate()
         }
-
-        binding.sensationsButton.setOnClickListener {
-            val sensations = SymptomEntry.Sensation.values()
-            var selectedSensation: SymptomEntry.Sensation = sensations.first()
-            MaterialAlertDialogBuilder(requireContext())
-                .setSingleChoiceItems(sensations.map { it.displayText }.toTypedArray(), 0) { _, i ->
-                    selectedSensation = sensations[i]
-                }
-                .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
-                    viewModel.selectSensation(selectedSensation)
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
-        }
-
-        binding.mucusButton.setOnClickListener {
-            MucusDialog.newInstance().also {
-                it.setTargetFragment(this, 0)
-            }.show(parentFragmentManager, null)
-        }
     }
 
     override fun mucusSaved(mucus: SymptomEntry.Mucus) {
@@ -97,5 +77,49 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         setupSymptomButton(binding.mucusButton, viewState.mucus)
         setupSymptomButton(binding.bleedingButton, viewState.bleeding)
         setupSymptomButton(binding.sexButton, viewState.sex)
+
+        fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
+            values: Array<T>,
+            currentValue: T?,
+            viewModelFunction: (T) -> Unit
+        ) {
+            setOnClickListener {
+                var selectedValue = currentValue ?: values.first()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setSingleChoiceItems(
+                        values.map { it.displayText }.toTypedArray(),
+                        values.indexOf(selectedValue)
+                    ) { _, i ->
+                        selectedValue = values[i]
+                    }
+                    .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
+                        viewModelFunction(selectedValue)
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
+        }
+
+        binding.sensationsButton.setUpRadioDialogListener(
+            values = SymptomEntry.Sensation.values(),
+            currentValue = viewState.sensation,
+            viewModelFunction = viewModel::selectSensation
+        )
+        binding.bleedingButton.setUpRadioDialogListener(
+            values = SymptomEntry.Bleeding.values(),
+            currentValue = viewState.bleeding,
+            viewModelFunction = viewModel::selectBleeding
+        )
+        binding.sexButton.setUpRadioDialogListener(
+            values = SymptomEntry.Sex.values(),
+            currentValue = viewState.sex,
+            viewModelFunction = viewModel::selectSex
+        )
+
+        binding.mucusButton.setOnClickListener {
+            MucusDialog.newInstance(viewState.mucus).also {
+                it.setTargetFragment(this, 0)
+            }.show(parentFragmentManager, null)
+        }
     }
 }

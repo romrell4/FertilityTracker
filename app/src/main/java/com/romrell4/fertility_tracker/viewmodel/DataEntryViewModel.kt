@@ -63,6 +63,18 @@ class DataEntryViewModel(
             stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(mucus = mucus))
         }
     }
+
+    fun selectBleeding(bleeding: SymptomEntry.Bleeding) {
+        stateFlow.value.let {
+            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(bleeding = bleeding))
+        }
+    }
+
+    fun selectSex(sex: SymptomEntry.Sex) {
+        stateFlow.value.let {
+            stateFlow.value = it.copy(symptomEntry = it.symptomEntry.copy(sex = sex))
+        }
+    }
 }
 
 @Parcelize

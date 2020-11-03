@@ -15,7 +15,7 @@ data class SymptomEntry(
     val sex: Sex? = null,
     val notes: String? = null
 ) : Parcelable {
-    enum class Sensation(val displayText: String) {
+    enum class Sensation(override val displayText: String): Symptom {
         DRY("Dry"),
         SMOOTH("Smooth"),
         LUBRICATIVE("Lubricative")
@@ -25,9 +25,9 @@ data class SymptomEntry(
     data class Mucus(
         val consistency: Consistency? = null,
         val color: Color? = null,
-        val dailyOccurrences: Int = 1
+        val dailyOccurrences: Int
     ) : Parcelable {
-        enum class Consistency(val displayText: String) {
+        enum class Consistency(override val displayText: String): Symptom {
             STICKY("Sticky"),
             TACKY("Tacky"),
             STRETCHY("Stretchy"),
@@ -35,7 +35,7 @@ data class SymptomEntry(
             GUMMY_GLUEY("Gummy/Gluey")
         }
 
-        enum class Color(val displayText: String) {
+        enum class Color(override val displayText: String): Symptom {
             CLOUDY("Cloudy"),
             CLEAR("Clear"),
             RED_PINK("Red/Pink"),
@@ -44,16 +44,20 @@ data class SymptomEntry(
         }
     }
 
-    enum class Bleeding {
-        SPOTTING,
-        VERY_LIGHT,
-        LIGHT,
-        MODERATE,
-        HEAVY
+    enum class Bleeding(override val displayText: String): Symptom {
+        SPOTTING("Spotting"),
+        VERY_LIGHT("Very Light"),
+        LIGHT("Light"),
+        MODERATE("Moderate"),
+        HEAVY("Heavy")
     }
 
-    enum class Sex {
-        PROTECTED,
-        UNPROTECTED
+    enum class Sex(override val displayText: String): Symptom {
+        PROTECTED("Protected"),
+        UNPROTECTED("Unprotected")
+    }
+
+    interface Symptom {
+        val displayText: String
     }
 }
