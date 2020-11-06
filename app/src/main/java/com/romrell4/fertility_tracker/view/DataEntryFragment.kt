@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment private constructor(): Fragment(), MucusDialogCallback {
+class DataEntryFragment : Fragment(), MucusDialogCallback {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }

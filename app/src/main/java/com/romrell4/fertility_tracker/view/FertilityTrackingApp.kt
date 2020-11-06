@@ -28,5 +28,5 @@ class DI(
     //Use cases
     val saveSymptomEntryUseCase: SaveSymptomEntryUseCase by lazy { SaveSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
     val findSymptomEntryUseCase: FindSymptomEntryUseCase by lazy { FindSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
-    val loadAllEntriesUseCase: GetAllEntriesUseCase by lazy { GetAllEntriesUseCaseImpl(fertilityTrackingRepo) }
+    val getAllCyclesUseCase: GetAllCyclesUseCase by lazy { GetAllCyclesUseCaseImpl(fertilityTrackingRepo) }
 }

@@ -2,6 +2,7 @@ package com.romrell4.fertility_tracker.repo
 
 import android.content.Context
 import androidx.core.content.edit
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.*
 import com.romrell4.fertility_tracker.domain.SymptomEntry
@@ -19,6 +20,7 @@ class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepos
     private val sharedPrefs = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
     private val objectMapper = jacksonObjectMapper().apply {
         registerModule(JavaTimeModule())
+        disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     }
 
     override fun saveSymptomEntry(symptomEntry: SymptomEntry) {

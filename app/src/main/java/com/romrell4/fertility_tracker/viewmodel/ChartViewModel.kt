@@ -1,13 +1,14 @@
 package com.romrell4.fertility_tracker.viewmodel
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.domain.SymptomEntry
-import com.romrell4.fertility_tracker.domain.toCycles
-import com.romrell4.fertility_tracker.usecase.GetAllEntriesUseCase
+import com.romrell4.fertility_tracker.usecase.GetAllCyclesUseCase
 import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
@@ -17,21 +18,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 private const val STATE_KEY = "CHART_STATE_KEY"
 
 @ExperimentalCoroutinesApi
 class ChartViewModel @JvmOverloads constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val loadAllEntriesUseCase: GetAllEntriesUseCase = DI.instance.loadAllEntriesUseCase
+    private val getAllCycles: GetAllCyclesUseCase = DI.instance.getAllCyclesUseCase
 ) : ViewModel() {
     val viewStateFlow: Flow<ChartViewState> by lazy {
         stateFlow.map { it.toViewState() }
     }
 
     private val stateFlow: MutableStateFlow<ChartState> = MutableStateFlow(
-        savedStateHandle.get(STATE_KEY) ?: ChartState(entries = emptyList())
+        savedStateHandle.get(STATE_KEY) ?: ChartState(cycles = emptyList())
     ).also {
         it.onEach { state ->
             savedStateHandle.set(STATE_KEY, state)
@@ -39,24 +40,57 @@ class ChartViewModel @JvmOverloads constructor(
     }
 
     fun loadAllEntries() {
-        stateFlow.value = ChartState(entries = (0..10).map {
-            SymptomEntry(LocalDate.now())
-        })
         viewModelScope.launch(Dispatchers.IO) {
-//            stateFlow.value = ChartState(loadAllEntriesUseCase.execute())
+            stateFlow.value = ChartState(getAllCycles.execute())
         }
     }
 }
 
 @Parcelize
 data class ChartState(
-    val entries: List<SymptomEntry>
+    val cycles: List<Cycle>
 ) : Parcelable {
     fun toViewState() = ChartViewState(
-        cycles = entries.toCycles()
+        cycles = cycles.map {
+            ChartViewState.CycleView(
+                cycleNumber = it.cycleNumber,
+                days = it.days.map { day ->
+                    ChartViewState.CycleView.DayView(
+                        dayOfCycle = day.dayOfCycle.toString(),
+                        date = day.symptomEntry.date.format(DateTimeFormatter.ofPattern("M/d")),
+                        stampRes = when {
+                            day.symptomEntry.bleeding != null -> R.drawable.ic_circle_red_24
+                            day.symptomEntry.hasPeakMucus -> R.drawable.ic_circle_purple_24
+                            day.symptomEntry.mucus != null -> R.drawable.ic_circle_pink_24
+                            else -> R.drawable.ic_circle_green_24
+                        },
+                        sensations = when (day.symptomEntry.sensation) {
+                            SymptomEntry.Sensation.DRY -> "D"
+                            SymptomEntry.Sensation.SMOOTH -> "S"
+                            SymptomEntry.Sensation.LUBRICATIVE -> "L"
+                            else -> null
+                        }
+                    )
+                }
+            )
+        }
     )
 }
 
 data class ChartViewState(
-    val cycles: List<Cycle>
-)
+    val cycles: List<CycleView>
+) {
+    data class CycleView(
+        val cycleNumber: Int,
+        val days: List<DayView>
+    ) {
+        data class DayView(
+            val dayOfCycle: String,
+            val date: String,
+            @DrawableRes
+            val stampRes: Int,
+            val sensations: String?
+        )
+    }
+}
+

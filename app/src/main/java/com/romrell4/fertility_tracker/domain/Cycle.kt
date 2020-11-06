@@ -14,15 +14,3 @@ data class Cycle(
         val symptomEntry: SymptomEntry
     ) : Parcelable
 }
-
-fun List<SymptomEntry>.toCycles(): List<Cycle> {
-    //TODO: Implement correctly (splitting into cycles)
-    return listOf(
-        Cycle(
-            cycleNumber = 1,
-            days = this.sortedBy { it.date }.mapIndexed { index, symptomEntry ->
-                Cycle.Day(index + 1, symptomEntry)
-            }
-        )
-    )
-}

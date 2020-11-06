@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class ChartFragment private constructor() : Fragment() {
+class ChartFragment : Fragment() {
     private val viewModel: ChartViewModel by viewModels {
         defaultViewModelProviderFactory
     }
