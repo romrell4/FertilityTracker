@@ -16,6 +16,7 @@ data class Cycle(
 }
 
 fun List<SymptomEntry>.toCycles(): List<Cycle> {
+    //TODO: Implement correctly (splitting into cycles)
     return listOf(
         Cycle(
             cycleNumber = 1,
@@ -24,7 +25,4 @@ fun List<SymptomEntry>.toCycles(): List<Cycle> {
             }
         )
     )
-//    val cycles = mutableListOf<Cycle>()
-    //TODO: Implement
-//    return cycles
 }
