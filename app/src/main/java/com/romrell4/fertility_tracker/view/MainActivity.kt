@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             field = new
         }
     private val dataEntryFragment by lazy { DataEntryFragment.newInstance() }
-    private val liveChartFragment by lazy { LiveChartFragment.newInstance() }
+    private val liveChartFragment by lazy { ChartFragment.newInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -40,7 +40,6 @@ class DataEntryFragment private constructor(): Fragment(), MucusDialogCallback {
         return binding.root
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

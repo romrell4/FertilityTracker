@@ -1,9 +1,8 @@
 package com.romrell4.fertility_tracker.viewmodel
 
-import android.app.Application
 import android.os.Parcelable
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
@@ -12,20 +11,18 @@ import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-private const val STATE_KEY = "STATE_KEY"
+private const val STATE_KEY = "DATA_ENTRY_STATE_KEY"
 
 @ExperimentalCoroutinesApi
 class DataEntryViewModel @JvmOverloads constructor(
-    application: Application,
     private val savedStateHandle: SavedStateHandle,
     private val saveEntryUseCase: SaveSymptomEntryUseCase = DI.instance.saveSymptomEntryUseCase,
     private val findSymptomEntryUseCase: FindSymptomEntryUseCase = DI.instance.findSymptomEntryUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     val viewStateFlow: Flow<DataEntryViewState> by lazy {
         stateFlow.map { it.toViewState() }.distinctUntilChanged()

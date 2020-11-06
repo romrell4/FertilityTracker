@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.romrell4.fertility_tracker.repo.FertilityTrackingRepository
 import com.romrell4.fertility_tracker.repo.FertilityTrackingRepositoryImpl
-import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
-import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCaseImpl
-import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
-import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCaseImpl
+import com.romrell4.fertility_tracker.usecase.*
 
 class FertilityTrackingApp : Application() {
     override fun onCreate() {
@@ -26,9 +23,10 @@ class DI(
     }
 
     //Repos
-    val fertilityTrackingRepo: FertilityTrackingRepository by lazy { FertilityTrackingRepositoryImpl(context) }
+    private val fertilityTrackingRepo: FertilityTrackingRepository by lazy { FertilityTrackingRepositoryImpl(context) }
 
     //Use cases
     val saveSymptomEntryUseCase: SaveSymptomEntryUseCase by lazy { SaveSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
     val findSymptomEntryUseCase: FindSymptomEntryUseCase by lazy { FindSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
+    val loadAllEntriesUseCase: GetAllEntriesUseCase by lazy { GetAllEntriesUseCaseImpl(fertilityTrackingRepo) }
 }

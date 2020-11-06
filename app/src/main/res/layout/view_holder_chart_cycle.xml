@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/cycleNumberText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Cycle #1" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:barrierDirection="bottom"
+            app:barrierMargin="8dp"
+            app:constraint_referenced_ids="cycleNumberText" />
+
+        <LinearLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier">
+
+            <TextView
+                android:id="@+id/dayOfCycleHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_cell_height"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/dayOfCycleHeader"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dateHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_cell_height"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/dateHeader"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/stampHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_cell_height"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/stampHeader"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sensationHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_cell_height"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/sensationsHeader"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/daysRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/headerLayout"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
+            tools:listitem="@layout/view_holder_chart_day" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

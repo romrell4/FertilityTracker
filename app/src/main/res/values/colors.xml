@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pink_light">#ffb2dd</color>
+    <color name="pink_light">#80FFB2DD</color>
     <color name="pink">#ff80ab</color>
     <color name="pink_dark">#c94f7c</color>
     <color name="purple">#ce93d8</color>

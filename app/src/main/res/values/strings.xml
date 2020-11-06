@@ -8,9 +8,14 @@
     <string name="bleeding_button_title">Bleeding</string>
     <string name="sex_button_title">Sex</string>
     <string name="alert_positive_text">Select</string>
-    <string name="notes_hint">Notes about today...</string>
+    <string name="notes_hint">Notes about today…</string>
     <string name="mucus_consistency_label">Consistency</string>
     <string name="mucus_color_label">Color</string>
     <string name="mucus_occurrences_label">Daily Occurrences</string>
     <string name="mucus_positive_text">Save</string>
+    <string name="dayOfCycleHeader">Day of Cycle</string>
+    <string name="dateHeader">Date</string>
+    <string name="stampHeader">Stamp</string>
+    <string name="sensationsHeader">Sensations</string>
+    <string name="cycleNumber">Cycle #%1$d</string>
 </resources>
