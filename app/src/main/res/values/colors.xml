@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pink_light">#80FFB2DD</color>
+    <color name="pink_light">#DDFFB2DD</color>
     <color name="pink">#ff80ab</color>
     <color name="pink_dark">#c94f7c</color>
-    <color name="purple">#ce93d8</color>
+    <color name="purple">#C474D1</color>
     <color name="gray">#aaaaaa</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_text">#77000000</color>
+
+    <!--Stamp colors-->
+    <color name="stamp_red">#D13A2F</color>
+    <color name="stamp_pink">@color/pink_light</color>
+    <color name="stamp_purple">@color/purple</color>
+    <color name="stamp_green">#4CAF50</color>
 </resources>

@@ -45,7 +45,6 @@ data class SymptomEntry(
 
     enum class Bleeding(override val displayText: String) : Symptom {
         SPOTTING("Spotting"),
-        VERY_LIGHT("Very Light"),
         LIGHT("Light"),
         MODERATE("Moderate"),
         HEAVY("Heavy")

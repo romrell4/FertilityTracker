@@ -15,6 +15,7 @@ class GetAllCyclesUseCaseImpl(
     override suspend fun execute(): List<Cycle> {
         //TODO: Compute cycles instead of entries
         val entries = fertilityTrackingRepo.getAllSymptomEntries().values.toList()
+
         return (0..3).map { cycleIndex ->
             Cycle(
                 cycleNumber = cycleIndex + 1,
@@ -23,16 +24,28 @@ class GetAllCyclesUseCaseImpl(
                         dayOfCycle = dayIndex + 1,
                         SymptomEntry(
                             date = LocalDate.of(2019, cycleIndex + 1, dayIndex + 1),
-                            sensation = SymptomEntry.Sensation.DRY,
-                            mucus = SymptomEntry.Mucus(
-                                consistency = SymptomEntry.Mucus.Consistency.GUMMY_GLUEY,
-                                color = SymptomEntry.Mucus.Color.CLEAR,
-                                dailyOccurrences = 3
-                            )
+                            sensation = SymptomEntry.Sensation.values().random(),
+                            mucus = listOf(SymptomEntry.Mucus(
+                                consistency = SymptomEntry.Mucus.Consistency.values().random(),
+                                color = SymptomEntry.Mucus.Color.values().random(),
+                                dailyOccurrences = listOf(1, 2, 3).random()
+                            ), null).random(),
+                            bleeding = when (dayIndex) {
+                                0,1,2,3 -> SymptomEntry.Bleeding.MODERATE
+                                else -> null
+                            }
                         )
                     )
                 }
             )
         }
+    }
+
+    fun List<SymptomEntry>.getCycleStartIndexes(): List<Int> {
+        val cycleStartIndexes = mutableListOf<Int>()
+        this.forEachIndexed { index, entry ->
+
+        }
+        return cycleStartIndexes
     }
 }
