@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment : Fragment(), MucusDialogCallback {
+class DataEntryFragment private constructor(): Fragment(), MucusDialogCallback {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }
@@ -126,6 +126,12 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
+        }
+    }
+
+    companion object {
+        fun newInstance(): DataEntryFragment {
+            return DataEntryFragment()
         }
     }
 }
