@@ -59,10 +59,10 @@ data class ChartState(
                         dayOfCycle = day.dayOfCycle.toString(),
                         date = day.symptomEntry.date.format(DateTimeFormatter.ofPattern("M/d")),
                         stampRes = when {
-                            day.symptomEntry.bleeding != null -> R.drawable.ic_circle_red_24
-                            day.symptomEntry.hasPeakMucus -> R.drawable.ic_circle_purple_24
-                            day.symptomEntry.mucus != null -> R.drawable.ic_circle_pink_24
-                            else -> R.drawable.ic_circle_green_24
+                            day.symptomEntry.bleeding != null -> R.drawable.ic_circle_bleeding
+                            day.symptomEntry.hasPeakMucus -> R.drawable.ic_circle_peak_mucus
+                            day.symptomEntry.mucus != null -> R.drawable.ic_circle_non_peak_mucus
+                            else -> R.drawable.ic_circle_no_mucus
                         },
                         sensations = when (day.symptomEntry.sensation) {
                             SymptomEntry.Sensation.DRY -> "D"

@@ -37,7 +37,7 @@
             android:layout_width="@dimen/stamp_size"
             android:layout_height="@dimen/stamp_size"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_circle_purple_24" />
+            tools:src="@drawable/ic_circle_peak_mucus" />
     </LinearLayout>
 
     <TextView

@@ -13,7 +13,7 @@ data class SymptomEntry(
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
     val notes: String? = null
-) : Parcelable {
+) : Parcelable, Comparable<SymptomEntry> {
     enum class Sensation(override val displayText: String) : Symptom {
         DRY("Dry"),
         SMOOTH("Smooth"),
@@ -64,4 +64,10 @@ data class SymptomEntry(
         get() = mucus?.consistency == Mucus.Consistency.STRETCHY ||
                 mucus?.color == Mucus.Color.CLEAR ||
                 sensation == Sensation.LUBRICATIVE
+
+    @IgnoredOnParcel
+    val hasRealBleeding: Boolean
+        get() = bleeding != null && bleeding != Bleeding.SPOTTING
+
+    override fun compareTo(other: SymptomEntry): Int = compareValuesBy(this, other, { it.date })
 }
