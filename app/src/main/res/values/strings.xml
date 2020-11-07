@@ -2,7 +2,6 @@
     <string name="app_name">Fertility Tracker</string>
     <string name="bottom_nav_entry">Add Entries</string>
     <string name="bottom_nav_chart">View Chart</string>
-    <string name="symptom_entry_header">My Symptoms</string>
     <string name="sensations_button_title">Sensations</string>
     <string name="mucus_button_title">Mucus</string>
     <string name="bleeding_button_title">Bleeding</string>
@@ -18,4 +17,6 @@
     <string name="stampHeader">Stamp</string>
     <string name="sensationsHeader">Sensations</string>
     <string name="cycleNumber">Cycle #%1$d</string>
+    <string name="previous_date_button_content_desc">Select previous date</string>
+    <string name="next_date_button_content_desc">Select next date</string>
 </resources>

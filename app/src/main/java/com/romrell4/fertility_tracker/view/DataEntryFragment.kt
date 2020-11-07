@@ -50,8 +50,8 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         }
 
         //Dates
-        binding.previousDateView.setOnClickListener { viewModel.selectPreviousDate() }
-        binding.nextDateView.setOnClickListener { viewModel.selectNextDate() }
+        binding.previousDateButton.setOnClickListener { viewModel.selectPreviousDate() }
+        binding.nextDateButton.setOnClickListener { viewModel.selectNextDate() }
 
         //Notes
         binding.notesText.addTextChangedListener { viewModel.saveNotes(it?.toString()) }
@@ -64,8 +64,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
     private fun render(viewState: DataEntryViewState) {
         //Date
         binding.currentDateView.text = DATE_FORMATTER.format(viewState.currentDate)
-        binding.previousDateView.text = DATE_FORMATTER.format(viewState.previousDate)
-        binding.nextDateView.text = DATE_FORMATTER.format(viewState.nextDate)
+        binding.nextDateButton.visibility = if (viewState.canSelectNextDate) View.VISIBLE else View.INVISIBLE
 
         //Buttons
         fun MaterialButton.setupSymptomButton(symptom: Any?) {

@@ -97,7 +97,8 @@ data class DataEntryState(
         mucus = symptomEntry.mucus,
         bleeding = symptomEntry.bleeding,
         sex = symptomEntry.sex,
-        notes = symptomEntry.notes
+        notes = symptomEntry.notes,
+        canSelectNextDate = symptomEntry.date < LocalDate.now()
     )
 }
 
@@ -107,11 +108,6 @@ data class DataEntryViewState(
     val mucus: SymptomEntry.Mucus?,
     val bleeding: SymptomEntry.Bleeding?,
     val sex: SymptomEntry.Sex?,
-    val notes: String?
-) {
-    val previousDate: LocalDate
-        get() = currentDate.minusDays(1)
-
-    val nextDate: LocalDate
-        get() = currentDate.plusDays(1)
-}
+    val notes: String?,
+    val canSelectNextDate: Boolean
+)
