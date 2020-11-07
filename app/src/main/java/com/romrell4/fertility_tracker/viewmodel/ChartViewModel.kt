@@ -40,9 +40,7 @@ class ChartViewModel @JvmOverloads constructor(
     }
 
     fun loadAllEntries() {
-//        viewModelScope.launch(Dispatchers.IO) {
-            stateFlow.value = ChartState(getAllCycles.execute())
-//        }
+        stateFlow.value = ChartState(getAllCycles.execute())
     }
 }
 
@@ -51,10 +49,10 @@ data class ChartState(
     val cycles: List<Cycle>
 ) : Parcelable {
     fun toViewState() = ChartViewState(
-        cycles = cycles.map {
+        cycles = cycles.map { cycle ->
             ChartViewState.CycleView(
-                cycleNumber = it.cycleNumber,
-                days = it.days.map { day ->
+                cycleNumber = cycle.cycleNumber,
+                days = cycle.days.map { day ->
                     ChartViewState.CycleView.DayView(
                         dayOfCycle = day.dayOfCycle.toString(),
                         date = day.symptomEntry.date.format(DateTimeFormatter.ofPattern("M/d")),
@@ -72,17 +70,13 @@ data class ChartState(
                             else -> null
                         },
                         dialogTitle = "${day.symptomEntry.date.format(DateTimeFormatter.ofPattern("EEEE, MMM d"))} (Day ${day.dayOfCycle})",
-                        dialogMessage = when {
-                            day.symptomEntry.bleeding != null -> "Flow: ${day.symptomEntry.bleeding.displayText}"
-                            day.symptomEntry.mucus != null -> """
-                                Consistency: ${day.symptomEntry.mucus.consistency}
-                                
-                                Color: ${day.symptomEntry.mucus.color}
-                                
-                                Number of Occurrences: ${day.symptomEntry.mucus.dailyOccurrences}
-                            """.trimIndent()
-                            else -> null
-                        }
+                        dialogMessage = listOfNotNull(
+                            day.symptomEntry.bleeding?.displayText?.let { "Flow: $it" },
+                            day.symptomEntry.mucus?.consistency?.let { "Consistency: $it" },
+                            day.symptomEntry.mucus?.color?.let { "Color: $it" },
+                            day.symptomEntry.mucus?.dailyOccurrences?.let { "Number of Occurrences: $it" },
+                            day.symptomEntry.notes?.takeIf { it.isNotBlank() }?.let { "Notes: \n$it" }
+                        ).joinToString("\n\n")
                     )
                 }
             )
