@@ -11,8 +11,8 @@
     <color name="light_text">#77000000</color>
 
     <!--Stamp colors-->
-    <color name="stamp_red">#FFABAB</color>
-    <color name="stamp_pink">@color/pink_light</color>
+    <color name="stamp_red">#C23B22</color>
+    <color name="stamp_pink">#FFABAB</color>
     <color name="stamp_purple">@color/purple</color>
     <color name="stamp_blue">#6EB5FF</color>
 </resources>

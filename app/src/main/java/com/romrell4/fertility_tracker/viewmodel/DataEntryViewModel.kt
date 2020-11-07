@@ -3,16 +3,13 @@ package com.romrell4.fertility_tracker.viewmodel
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
 import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
 import com.romrell4.fertility_tracker.view.DI
 import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 private const val STATE_KEY = "DATA_ENTRY_STATE_KEY"
