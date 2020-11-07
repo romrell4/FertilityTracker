@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
-import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
