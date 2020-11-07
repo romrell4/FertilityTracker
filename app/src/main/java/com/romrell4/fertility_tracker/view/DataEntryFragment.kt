@@ -57,7 +57,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         binding.notesText.addTextChangedListener { viewModel.saveNotes(it?.toString()) }
     }
 
-    override fun mucusSaved(mucus: SymptomEntry.Mucus) {
+    override fun mucusSaved(mucus: SymptomEntry.Mucus?) {
         viewModel.saveMucus(mucus)
     }
 
@@ -108,7 +108,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
     private fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
         values: Array<T>,
         currentValue: T?,
-        viewModelFunction: (T) -> Unit
+        viewModelFunction: (T?) -> Unit
     ) {
         setOnClickListener {
             var selectedValue = currentValue ?: values.first()
@@ -122,7 +122,10 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
                 .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
                     viewModelFunction(selectedValue)
                 }
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNeutralButton(android.R.string.cancel, null)
+                .setNegativeButton(context.getString(R.string.clear)) { _, _ ->
+                    viewModelFunction(null)
+                }
                 .show()
         }
     }

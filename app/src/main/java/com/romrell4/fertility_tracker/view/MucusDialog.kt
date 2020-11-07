@@ -14,7 +14,7 @@ import com.romrell4.fertility_tracker.domain.SymptomEntry
 private const val MUCUS_KEY = "Mucus"
 
 interface MucusDialogCallback {
-    fun mucusSaved(mucus: SymptomEntry.Mucus)
+    fun mucusSaved(mucus: SymptomEntry.Mucus?)
 }
 
 class MucusDialog private constructor() : DialogFragment() {
@@ -68,7 +68,10 @@ class MucusDialog private constructor() : DialogFragment() {
                     )
                 )
             }
-            .setNegativeButton(android.R.string.cancel, null)
+            .setNegativeButton(R.string.clear) { _, _ ->
+                (targetFragment as? MucusDialogCallback)?.mucusSaved(null)
+            }
+            .setNeutralButton(android.R.string.cancel, null)
             .create()
     }
 

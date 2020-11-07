@@ -58,19 +58,19 @@ class DataEntryViewModel @JvmOverloads constructor(
         )
     }
 
-    fun selectSensation(sensation: SymptomEntry.Sensation) {
+    fun selectSensation(sensation: SymptomEntry.Sensation?) {
         updateSymptomEntry { it.copy(sensation = sensation) }
     }
 
-    fun saveMucus(mucus: SymptomEntry.Mucus) {
+    fun saveMucus(mucus: SymptomEntry.Mucus?) {
         updateSymptomEntry { it.copy(mucus = mucus) }
     }
 
-    fun selectBleeding(bleeding: SymptomEntry.Bleeding) {
+    fun selectBleeding(bleeding: SymptomEntry.Bleeding?) {
         updateSymptomEntry { it.copy(bleeding = bleeding) }
     }
 
-    fun selectSex(sex: SymptomEntry.Sex) {
+    fun selectSex(sex: SymptomEntry.Sex?) {
         updateSymptomEntry { it.copy(sex = sex) }
     }
 
@@ -81,9 +81,10 @@ class DataEntryViewModel @JvmOverloads constructor(
     private fun updateSymptomEntry(symptomEntryBlock: (SymptomEntry) -> SymptomEntry) {
         val symptomEntry = symptomEntryBlock(stateFlow.value.symptomEntry)
         stateFlow.value = stateFlow.value.copy(symptomEntry = symptomEntry)
-        viewModelScope.launch(Dispatchers.IO) {
+        //TODO: Determine why this takes no long to dispatch
+//        viewModelScope.launch(Dispatchers.Default) {
             saveEntryUseCase.execute(symptomEntry)
-        }
+//        }
     }
 }
 

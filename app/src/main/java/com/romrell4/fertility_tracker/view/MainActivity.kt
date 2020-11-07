@@ -19,11 +19,13 @@ class MainActivity : AppCompatActivity() {
             //Only replace the fragment if it's actually changing
             if (field != new && new != null) {
                 supportFragmentManager.commit {
-                    replace(R.id.frame, new.fragment.value)
+                    replace(R.id.frame, new.getFragment())
                 }
             }
             field = new
         }
+    private val dataEntryFragment by lazy { DataEntryFragment.newInstance() }
+    private val chartFragment by lazy { ChartFragment.newInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +57,13 @@ class MainActivity : AppCompatActivity() {
         fragmentState = savedInstanceState.getSerializable(FRAGMENT_STATE_KEY) as? FragmentState
     }
 
-    enum class FragmentState(val fragment: Lazy<Fragment>) {
-        DATA_ENTRY(lazy { DataEntryFragment.newInstance() }),
-        CHART(lazy { ChartFragment.newInstance()})
+    enum class FragmentState {
+        DATA_ENTRY,
+        CHART
+    }
+
+    fun FragmentState.getFragment(): Fragment = when(this) {
+        FragmentState.DATA_ENTRY -> dataEntryFragment
+        FragmentState.CHART -> chartFragment
     }
 }

@@ -40,9 +40,9 @@ class ChartViewModel @JvmOverloads constructor(
     }
 
     fun loadAllEntries() {
-        viewModelScope.launch(Dispatchers.IO) {
+//        viewModelScope.launch(Dispatchers.IO) {
             stateFlow.value = ChartState(getAllCycles.execute())
-        }
+//        }
     }
 }
 
@@ -59,9 +59,10 @@ data class ChartState(
                         dayOfCycle = day.dayOfCycle.toString(),
                         date = day.symptomEntry.date.format(DateTimeFormatter.ofPattern("M/d")),
                         stampRes = when {
-                            day.symptomEntry.bleeding != null -> R.drawable.ic_circle_bleeding
+                            //TODO: Combined stamps?
                             day.symptomEntry.hasPeakMucus -> R.drawable.ic_circle_peak_mucus
                             day.symptomEntry.mucus != null -> R.drawable.ic_circle_non_peak_mucus
+                            day.symptomEntry.bleeding != null -> R.drawable.ic_circle_bleeding
                             else -> R.drawable.ic_circle_no_mucus
                         },
                         sensations = when (day.symptomEntry.sensation) {

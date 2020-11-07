@@ -6,14 +6,15 @@ import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.repo.FertilityTrackingRepository
 
 interface GetAllCyclesUseCase {
-    suspend fun execute(): List<Cycle>
+    fun execute(): List<Cycle>
 }
 
 class GetAllCyclesUseCaseImpl(
     private val fertilityTrackingRepo: FertilityTrackingRepository
 ) : GetAllCyclesUseCase {
-    override suspend fun execute(): List<Cycle> {
-        return fertilityTrackingRepo.getAllSymptomEntries().values.toList().fillInBlanks().splitIntoCycles()
+    override fun execute(): List<Cycle> {
+        val allEntries = fertilityTrackingRepo.getAllSymptomEntries().values.toList()
+        return allEntries.fillInBlanks().splitIntoCycles()
             .mapIndexed { cycleIndex, entries ->
                 Cycle(
                     cycleNumber = cycleIndex + 1,

@@ -19,4 +19,5 @@
     <string name="cycleNumber">Cycle #%1$d</string>
     <string name="previous_date_button_content_desc">Select previous date</string>
     <string name="next_date_button_content_desc">Select next date</string>
+    <string name="clear">Clear</string>
 </resources>
