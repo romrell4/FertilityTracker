@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartDayBinding
 import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
@@ -36,6 +38,15 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         binding.dayOfCycleText.text = day.dayOfCycle
         binding.dateText.text = day.date
         binding.stampImage.setBackgroundResource(day.stampRes)
+        day.dialogMessage?.let { dialogMessage ->
+            binding.stampImage.setOnClickListener {
+                MaterialAlertDialogBuilder(itemView.context)
+                    .setTitle(day.dialogTitle)
+                    .setMessage(dialogMessage)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            }
+        }
         binding.sensationText.text = day.sensations
     }
 }

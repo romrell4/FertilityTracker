@@ -70,6 +70,18 @@ data class ChartState(
                             SymptomEntry.Sensation.SMOOTH -> "S"
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
                             else -> null
+                        },
+                        dialogTitle = "${day.symptomEntry.date.format(DateTimeFormatter.ofPattern("EEEE, MMM d"))} (Day ${day.dayOfCycle})",
+                        dialogMessage = when {
+                            day.symptomEntry.bleeding != null -> "Flow: ${day.symptomEntry.bleeding.displayText}"
+                            day.symptomEntry.mucus != null -> """
+                                Consistency: ${day.symptomEntry.mucus.consistency}
+                                
+                                Color: ${day.symptomEntry.mucus.color}
+                                
+                                Number of Occurrences: ${day.symptomEntry.mucus.dailyOccurrences}
+                            """.trimIndent()
+                            else -> null
                         }
                     )
                 }
@@ -90,7 +102,9 @@ data class ChartViewState(
             val date: String,
             @DrawableRes
             val stampRes: Int,
-            val sensations: String?
+            val sensations: String?,
+            val dialogTitle: String,
+            val dialogMessage: String?
         )
     }
 }

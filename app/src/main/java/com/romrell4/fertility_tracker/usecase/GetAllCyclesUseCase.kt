@@ -26,30 +26,6 @@ class GetAllCyclesUseCaseImpl(
                     }
                 )
             }.sortedByDescending { it.cycleNumber }
-
-//        return (0..3).map { cycleIndex ->
-//            Cycle(
-//                cycleNumber = cycleIndex + 1,
-//                days = (0..27).map { dayIndex ->
-//                    Cycle.Day(
-//                        dayOfCycle = dayIndex + 1,
-//                        SymptomEntry(
-//                            date = LocalDate.of(2019, cycleIndex + 1, dayIndex + 1),
-//                            sensation = SymptomEntry.Sensation.values().random(),
-//                            mucus = listOf(SymptomEntry.Mucus(
-//                                consistency = SymptomEntry.Mucus.Consistency.values().random(),
-//                                color = SymptomEntry.Mucus.Color.values().random(),
-//                                dailyOccurrences = listOf(1, 2, 3).random()
-//                            ), null).random(),
-//                            bleeding = when (dayIndex) {
-//                                0,1,2,3 -> SymptomEntry.Bleeding.MODERATE
-//                                else -> null
-//                            }
-//                        )
-//                    )
-//                }
-//            )
-//        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
