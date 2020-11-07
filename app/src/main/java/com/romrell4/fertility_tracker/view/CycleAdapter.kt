@@ -38,6 +38,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         binding.daysRecyclerView.also {
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            it.scrollToPosition(cycle.days.size - 1)
         }
         adapter.submitList(cycle.days)
     }
