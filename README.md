@@ -2,7 +2,7 @@
 
 ## V1
 
-### [X] Enter Daily Symptoms
+### Enter Daily Symptoms
 On the main page
 Fields in the Form:
 * Date (editable defaulting to today)
@@ -20,7 +20,7 @@ Fields in the Form:
   * If yes, Protected (Radio - Y/N)
 * Notes (Free form - single line)
 
-### [X] Viewing Live Symptom Chart
+### Viewing Live Symptom Chart
 Allows you to slide to previous days
 Scroll to the end by default
 
@@ -37,7 +37,6 @@ Rows:
 Stamp Tapping:
 * If Bleeding -> (H/M/L/S)
 * If Mucus -> Consistency/Color/# Times
-
 
 Viewing Days of Interest
 * First day of cycle
