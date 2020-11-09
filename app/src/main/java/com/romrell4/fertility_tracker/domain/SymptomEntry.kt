@@ -24,7 +24,7 @@ data class SymptomEntry(
     data class Mucus(
         val consistency: Consistency? = null,
         val color: Color? = null,
-        val dailyOccurrences: Int
+        val dailyOccurrences: Int = 1
     ) : Parcelable {
         enum class Consistency(override val displayText: String) : Symptom {
             STICKY("Sticky"),
@@ -64,6 +64,10 @@ data class SymptomEntry(
         get() = mucus?.consistency == Mucus.Consistency.STRETCHY ||
                 mucus?.color == Mucus.Color.CLEAR ||
                 sensation == Sensation.LUBRICATIVE
+
+    @IgnoredOnParcel
+    val hasNonPeakMucus: Boolean
+        get() = mucus != null && !hasPeakMucus
 
     @IgnoredOnParcel
     val hasRealBleeding: Boolean

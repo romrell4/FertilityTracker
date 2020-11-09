@@ -38,8 +38,11 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         binding.dayOfCycleText.text = day.dayOfCycle
         binding.dateText.text = day.date
         binding.stampImage.setBackgroundResource(day.stampRes)
-        day.dialogMessage?.let { dialogMessage ->
-            binding.stampImage.setOnClickListener {
+        binding.stampImageWrapper.setBackgroundColor(
+            itemView.context.getColor(if (day.peakMucusRange) R.color.pink_light else android.R.color.transparent)
+        )
+        binding.stampImage.setOnClickListener {
+            day.dialogMessage?.let { dialogMessage ->
                 MaterialAlertDialogBuilder(itemView.context)
                     .setTitle(day.dialogTitle)
                     .setMessage(dialogMessage)

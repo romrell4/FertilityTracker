@@ -1,8 +1,7 @@
-package com.romrell4.fertility_tracker
+package com.romrell4.fertility_tracker.usecase
 
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.repo.FertilityTrackingRepository
-import com.romrell4.fertility_tracker.usecase.GetAllCyclesUseCaseImpl
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
