@@ -46,4 +46,53 @@ Viewing Days of Interest
 * Peak Mucus
   * Definition: Any day that has Clear or Stretchy mucus, or Lubricative sensation.
 
+## V2
+### Enter Daily Basal Body Temperature
+Fields in the Form:
+* Temperature (Decimal)
+* Abnormal (Checkbox)
+  * If yes, Notes (free form)
+* Notes (String)
 
+### Graph for Basal Body Temp
+* Abnormal days with special icon
+* Line graph (connected)
+
+### Point Tap on Graph
+* If normal day -> display temp
+* If abnormal -> temp/notes
+
+### View Previous Cycles
+Select symptom/thermal/both to show up
+
+### Graph Coverline
+Definition
+* Ovulation: First time in a cycle when three consecutive NORMAL temps are greater than the previous six NORMAL temps.
+* Coverline: Highest of the six NORMAL low temps (see above) + 0.1 degrees
+
+### Peak Day + 1/2/3
+* Peak Day
+  * Definition: Any occurrence in a cycle of the following: The last day of peak mucus, or the fourth consecutive day of non-peak mucus
+  * UI: Background color (or alternative)
+  * After peak day, the next three days also appear differently
+
+
+## V3
+### Sub-sensations
+
+### Chart including Notes
+New row in chart
+* If the first character in the notes is an emoji, display emoji
+* If the first character is a letter, display (i)
+
+In both cases, display the full notes text on tap
+
+
+### Filter Which Attributes are Displayed in Chart
+
+
+### View Average Length of Cycle
+
+### Graph Points as Color of Stamps (optional)
+
+### Sex in Chart (with icons)
