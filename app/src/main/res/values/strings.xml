@@ -20,5 +20,4 @@
     <string name="previous_date_button_content_desc">Select previous date</string>
     <string name="next_date_button_content_desc">Select next date</string>
     <string name="clear">Clear</string>
-    <string name="stamp_alert_bleeding_message">Flow: %1$s</string>
 </resources>

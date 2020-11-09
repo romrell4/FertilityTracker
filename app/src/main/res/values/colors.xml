@@ -8,7 +8,6 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_text">#77000000</color>
 
     <!--Stamp colors-->
     <color name="stamp_red">#C23B22</color>
