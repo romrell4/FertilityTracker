@@ -17,7 +17,7 @@ interface MucusDialogCallback {
     fun mucusSaved(mucus: SymptomEntry.Mucus?)
 }
 
-class MucusDialog private constructor() : DialogFragment() {
+class MucusDialog : DialogFragment() {
     private lateinit var binding: MucusDialogBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -52,7 +52,7 @@ class MucusDialog private constructor() : DialogFragment() {
 
         return MaterialAlertDialogBuilder(requireContext())
             .setView(binding.root)
-            .setPositiveButton(R.string.mucus_positive_text) { _, _ ->
+            .setPositiveButton(R.string.save) { _, _ ->
                 @Suppress("UNCHECKED_CAST")
                 fun <T> getSymptom(radioGroup: RadioGroup): T? {
                     return radioGroup.findViewById<RadioButton>(

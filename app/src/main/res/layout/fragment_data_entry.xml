@@ -40,59 +40,83 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/currentDateView" />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/currentDateView">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sensationsButton"
-            style="@style/SymptomButton"
-            android:contentDescription="@string/sensations_button_title"
-            android:drawableTop="@drawable/ic_sensations"
-            android:text="@string/sensations_button_title" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mucusButton"
-            style="@style/SymptomButton"
-            android:contentDescription="@string/mucus_button_title"
-            android:drawableTop="@drawable/ic_mucus"
-            android:text="@string/mucus_button_title" />
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bleedingButton"
-            style="@style/SymptomButton"
-            android:contentDescription="@string/bleeding_button_title"
-            android:drawableTop="@drawable/ic_bleeding"
-            android:text="@string/bleeding_button_title" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sensationsButton"
+                    style="@style/SymptomButton"
+                    android:contentDescription="@string/sensations_button_title"
+                    android:drawableTop="@drawable/ic_sensations"
+                    android:text="@string/sensations_button_title" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sexButton"
-            style="@style/SymptomButton"
-            android:contentDescription="@string/sex_button_title"
-            android:drawableTop="@drawable/ic_sex"
-            android:text="@string/sex_button_title" />
-    </GridLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mucusButton"
+                    style="@style/SymptomButton"
+                    android:contentDescription="@string/mucus_button_title"
+                    android:drawableTop="@drawable/ic_mucus"
+                    android:text="@string/mucus_button_title" />
 
-    <EditText
-        android:id="@+id/notesText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/notes_hint"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine|textCapSentences"
-        android:maxLines="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gridLayout"
-        app:layout_constraintVertical_bias="0.0" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bleedingButton"
+                    style="@style/SymptomButton"
+                    android:contentDescription="@string/bleeding_button_title"
+                    android:drawableTop="@drawable/ic_bleeding"
+                    android:text="@string/bleeding_button_title" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sexButton"
+                    style="@style/SymptomButton"
+                    android:contentDescription="@string/sex_button_title"
+                    android:drawableTop="@drawable/ic_sex"
+                    android:text="@string/sex_button_title" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/temperatureButton"
+                    style="@style/SymptomButton"
+                    android:layout_column="0"
+                    android:layout_columnSpan="2"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/temperature_title"
+                    android:drawableTop="@drawable/ic_temperature"
+                    android:text="@string/temperature_title" />
+            </GridLayout>
+
+            <EditText
+                android:id="@+id/notesText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/notes_hint"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/gridLayout"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

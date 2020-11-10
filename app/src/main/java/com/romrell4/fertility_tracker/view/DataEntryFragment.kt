@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment : Fragment(), MucusDialogCallback {
+class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCallback {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }
@@ -60,6 +60,10 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         viewModel.saveMucus(mucus)
     }
 
+    override fun temperatureSaved(temperature: SymptomEntry.Temperature?) {
+        viewModel.saveTemperature(temperature)
+    }
+
     private fun render(viewState: DataEntryViewState) {
         //Date
         binding.currentDateView.text = DATE_FORMATTER.format(viewState.currentDate)
@@ -74,12 +78,18 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
         binding.mucusButton.setupSymptomButton(viewState.mucus)
         binding.bleedingButton.setupSymptomButton(viewState.bleeding)
         binding.sexButton.setupSymptomButton(viewState.sex)
+        binding.temperatureButton.setupSymptomButton(viewState.temperature)
 
         binding.sensationsButton.setUpRadioDialogListener(
             values = SymptomEntry.Sensation.values(),
             currentValue = viewState.sensation,
             viewModelFunction = viewModel::selectSensation
         )
+        binding.mucusButton.setOnClickListener {
+            MucusDialog.newInstance(viewState.mucus).also {
+                it.setTargetFragment(this, 0)
+            }.show(parentFragmentManager, null)
+        }
         binding.bleedingButton.setUpRadioDialogListener(
             values = SymptomEntry.Bleeding.values(),
             currentValue = viewState.bleeding,
@@ -90,8 +100,8 @@ class DataEntryFragment : Fragment(), MucusDialogCallback {
             currentValue = viewState.sex,
             viewModelFunction = viewModel::selectSex
         )
-        binding.mucusButton.setOnClickListener {
-            MucusDialog.newInstance(viewState.mucus).also {
+        binding.temperatureButton.setOnClickListener {
+            TemperatureDialog.newInstance(viewState.temperature).also {
                 it.setTargetFragment(this, 0)
             }.show(parentFragmentManager, null)
         }

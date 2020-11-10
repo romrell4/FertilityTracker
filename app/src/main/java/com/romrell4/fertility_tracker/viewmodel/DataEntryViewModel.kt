@@ -71,6 +71,10 @@ class DataEntryViewModel @JvmOverloads constructor(
         updateSymptomEntry { it.copy(sex = sex) }
     }
 
+    fun saveTemperature(temperature: SymptomEntry.Temperature?) {
+        updateSymptomEntry { it.copy(temperature = temperature) }
+    }
+
     fun saveNotes(notes: String?) {
         updateSymptomEntry { it.copy(notes = notes) }
     }
@@ -78,10 +82,7 @@ class DataEntryViewModel @JvmOverloads constructor(
     private fun updateSymptomEntry(symptomEntryBlock: (SymptomEntry) -> SymptomEntry) {
         val symptomEntry = symptomEntryBlock(stateFlow.value.symptomEntry)
         stateFlow.value = stateFlow.value.copy(symptomEntry = symptomEntry)
-        //TODO: Determine why this takes no long to dispatch
-//        viewModelScope.launch(Dispatchers.Default) {
-            saveEntryUseCase.execute(symptomEntry)
-//        }
+        saveEntryUseCase.execute(symptomEntry)
     }
 }
 
@@ -96,6 +97,7 @@ data class DataEntryState(
         bleeding = symptomEntry.bleeding,
         sex = symptomEntry.sex,
         notes = symptomEntry.notes,
+        temperature = symptomEntry.temperature,
         canSelectNextDate = symptomEntry.date < LocalDate.now()
     )
 }
@@ -107,5 +109,6 @@ data class DataEntryViewState(
     val bleeding: SymptomEntry.Bleeding?,
     val sex: SymptomEntry.Sex?,
     val notes: String?,
+    val temperature: SymptomEntry.Temperature?,
     val canSelectNextDate: Boolean
 )

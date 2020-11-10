@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.time.LocalDate
+import java.time.LocalTime
 
 @Parcelize
 data class SymptomEntry(
@@ -12,6 +13,7 @@ data class SymptomEntry(
     val mucus: Mucus? = null,
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
+    val temperature: Temperature? = null,
     val notes: String? = null
 ) : Parcelable, Comparable<SymptomEntry> {
     enum class Sensation(override val displayText: String) : Symptom {
@@ -54,6 +56,14 @@ data class SymptomEntry(
         PROTECTED("Protected"),
         UNPROTECTED("Unprotected")
     }
+
+    @Parcelize
+    data class Temperature(
+        val time: LocalTime,
+        val value: Double,
+        val abnormal: Boolean = false,
+        val abnormalNotes: String? = null
+    ) : Parcelable
 
     interface Symptom {
         val displayText: String
