@@ -14,12 +14,9 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.renderer.XAxisRenderer
-import com.github.mikephil.charting.utils.Utils
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
-import kotlin.math.*
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
     object : DiffUtil.ItemCallback<ChartViewState.CycleView>() {
