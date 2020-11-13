@@ -2,10 +2,10 @@
 <resources>
     <dimen name="button_size">120dp</dimen>
     <dimen name="inc_dec_button_size">20dp</dimen>
-    <dimen name="chart_cell_width">24dp</dimen>
-    <dimen name="chart_cell_height">32dp</dimen>
+    <dimen name="chart_cell_width">26dp</dimen>
+    <dimen name="chart_cell_height">24dp</dimen>
     <dimen name="stamp_size">20dp</dimen>
     <dimen name="date_arrows_size">32dp</dimen>
     <dimen name="temp_text_width">40dp</dimen>
-    <dimen name="chart_height">240dp</dimen>
+    <dimen name="chart_height">320dp</dimen>
 </resources>

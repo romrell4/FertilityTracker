@@ -41,39 +41,23 @@
 
             <TextView
                 android:id="@+id/dayOfCycleHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/chart_cell_height"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/dayOfCycleHeader"
-                android:textStyle="bold" />
+                style="@style/CycleTableHeader"
+                android:text="@string/dayOfCycleHeader" />
 
             <TextView
                 android:id="@+id/dateHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/chart_cell_height"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/dateHeader"
-                android:textStyle="bold" />
+                style="@style/CycleTableHeader"
+                android:text="@string/dateHeader" />
 
             <TextView
                 android:id="@+id/stampHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/chart_cell_height"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/stampHeader"
-                android:textStyle="bold" />
+                style="@style/CycleTableHeader"
+                android:text="@string/stampHeader" />
 
             <TextView
                 android:id="@+id/sensationHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/chart_cell_height"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/sensationsHeader"
-                android:textStyle="bold" />
+                style="@style/CycleTableHeader"
+                android:text="@string/sensationsHeader" />
         </LinearLayout>
 
         <HorizontalScrollView

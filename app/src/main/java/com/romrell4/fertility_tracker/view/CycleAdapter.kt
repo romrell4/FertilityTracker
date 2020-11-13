@@ -1,16 +1,12 @@
 package com.romrell4.fertility_tracker.view
 
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -18,9 +14,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.renderer.XAxisRenderer
+import com.github.mikephil.charting.utils.Utils
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
+import kotlin.math.*
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
     object : DiffUtil.ItemCallback<ChartViewState.CycleView>() {
@@ -62,32 +61,43 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
     }
 
     private fun LineChart.setup(cycle: ChartViewState.CycleView) {
-        data = cycle.getLineData()
-        //Turn off pinching/scrolling (since we're using our own scrollview)
+        //General UI
         description = null
+        legend.isEnabled = false
+        layoutParams = layoutParams.also {
+            it.width = itemView.context.resources.getDimensionPixelSize(R.dimen.chart_cell_width) * cycle.days.size + CHART_SIZE_OFFSET_PX
+        }
+
+        //Add data
+        data = cycle.getLineData()
+
+        //Turn off pinching/scrolling (since we're using our own scrollview)
         isDragEnabled = false
         isScaleXEnabled = false
         isScaleYEnabled = false
         isDoubleTapToZoomEnabled = false
-        axisLeft.setDrawLabels(false)
-        axisRight.setDrawLabels(false)
-        axisRight.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-        axisLeft.granularity = 0.1f
+
+        //Configure X-axis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.axisMinimum = 1f
         xAxis.axisMaximum = cycle.days.size.toFloat()
         xAxis.setLabelCount(cycle.days.size, true)
-        legend.isEnabled = false
-        layoutParams = layoutParams.also {
-            it.width = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                24.5f, //This value matches the @dimens/chart_cell_width + .5 for the margins between cells
-                resources.displayMetrics
-            ).toInt() * cycle.days.size + 1
-        }
+        setXAxisRenderer( //Hack to make the x axis actually layout all the days
+            CustomXAxisRenderer(viewPortHandler, xAxis, getTransformer(YAxis.AxisDependency.LEFT), cycle.days.size)
+        )
+
+        //Configure Y-axis
+        axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        //TODO: Figure out if Jess really wants this
+//        axisLeft.axisMinimum = 94.5f
+//        axisLeft.axisMaximum = 100f
+//        axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / .1).roundToInt() + 1
+        axisRight.isEnabled = false
+
         //TODO: V3 Implement coverline in CycleView
 //        axisRight.addLimitLine(LimitLine(98f, "Coverline"))
 
+        //Set up interactions
         setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 //TODO: Dismiss any existing markers, and pop up a new marker
@@ -104,6 +114,16 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
             dayView.temperature?.toFloat()?.let {
                 Entry(index.toFloat() + 1, it)
             }
-        }, "Temperature")))
+        }, "Temperature").apply {
+            lineWidth = 2f
+            color = itemView.context.getColor(R.color.pink_light)
+            circleRadius = 4f
+            setDrawCircleHole(false)
+            setCircleColor(itemView.context.getColor(R.color.pink))
+        }))
+    }
+
+    companion object {
+        private const val CHART_SIZE_OFFSET_PX = 10
     }
 }

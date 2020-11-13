@@ -12,10 +12,10 @@
     <string name="mucus_color_label">Color</string>
     <string name="mucus_occurrences_label">Daily Occurrences</string>
     <string name="save">Save</string>
-    <string name="dayOfCycleHeader">Day of Cycle</string>
+    <string name="dayOfCycleHeader">Day #</string>
     <string name="dateHeader">Date</string>
     <string name="stampHeader">Stamp</string>
-    <string name="sensationsHeader">Sensations</string>
+    <string name="sensationsHeader">Sens</string>
     <string name="cycleNumber">Cycle #%1$d</string>
     <string name="previous_date_button_content_desc">Select previous date</string>
     <string name="next_date_button_content_desc">Select next date</string>
