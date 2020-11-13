@@ -74,7 +74,8 @@ data class ChartState(
                             day.symptomEntry.mucus?.dailyOccurrences?.let { "Number of Occurrences: $it" },
                             day.symptomEntry.notes?.takeIf { it.isNotBlank() }?.let { "Notes: \n$it" }
                         ).joinToString("\n\n"),
-                        peakMucusRange = cycle.peakDayRangeIndexes.contains(index)
+                        peakMucusRange = cycle.peakDayRangeIndexes.contains(index),
+                        temperature = day.symptomEntry.temperature?.value
                     )
                 }
             )
@@ -97,7 +98,8 @@ data class ChartViewState(
             val sensations: String?,
             val dialogTitle: String,
             val dialogMessage: String?,
-            val peakMucusRange: Boolean
+            val peakMucusRange: Boolean,
+            val temperature: Double?
         )
     }
 }
