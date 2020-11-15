@@ -57,6 +57,8 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         adapter.submitList(cycle.days)
 
         binding.chart.setup(cycle)
+
+        //TODO: When tapping a temp on the graph, highlight the row above as well
     }
 
     private fun LineChart.setup(cycle: ChartViewState.CycleView) {
