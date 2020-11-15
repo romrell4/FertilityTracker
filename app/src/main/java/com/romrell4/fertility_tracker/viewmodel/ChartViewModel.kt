@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 private const val STATE_KEY = "CHART_STATE_KEY"
@@ -41,6 +42,8 @@ class ChartViewModel @JvmOverloads constructor(
     }
 }
 
+private val CYCLE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy")
+
 @Parcelize
 data class ChartState(
     val cycles: List<Cycle>
@@ -49,6 +52,8 @@ data class ChartState(
         cycles = cycles.map { cycle ->
             ChartViewState.CycleView(
                 cycleNumber = cycle.cycleNumber,
+                startDate = cycle.startDate.format(CYCLE_DATE_FORMATTER),
+                endDate = cycle.endDate.format(CYCLE_DATE_FORMATTER),
                 days = cycle.days.mapIndexed { index, day ->
                     ChartViewState.CycleView.DayView(
                         dayOfCycle = day.dayOfCycle.toString(),
@@ -79,7 +84,8 @@ data class ChartState(
                             ChartViewState.CycleView.TemperatureView(it.value, it.abnormal, it.abnormalNotes)
                         }
                     )
-                }
+                },
+                coverlineValue = cycle.coverlineValue
             )
         }
     )
@@ -90,7 +96,10 @@ data class ChartViewState(
 ) {
     data class CycleView(
         val cycleNumber: Int,
-        val days: List<DayView>
+        val startDate: String,
+        val endDate: String,
+        val days: List<DayView>,
+        val coverlineValue: Double?
     ) {
         data class DayView(
             val dayOfCycle: String,

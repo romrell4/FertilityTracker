@@ -4,9 +4,31 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.Test
+import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class CycleTest {
+    @Test
+    fun `test start and end dates`() {
+        fun day(date: LocalDate): Cycle.Day = mockk {
+            every { symptomEntry.date } returns date
+        }
+
+        //Test no dates - should throw exception
+        Cycle(days = emptyList()).apply {
+            assertFailsWith<IllegalStateException> { startDate }
+            assertFailsWith<IllegalStateException> { endDate }
+        }
+
+        //Test a bunch of random dates - should calculate correctly
+        Cycle(days = (1..28).shuffled().map { day(LocalDate.of(2020, 1, it)) }).apply {
+            assertEquals(LocalDate.of(2020, 1, 1), startDate)
+            assertEquals(LocalDate.of(2020, 1, 28), endDate)
+        }
+    }
+
     @Test
     fun `test peak day indexes`() {
         fun day(peakMucus: Boolean = false, mucus: Boolean = false): Cycle.Day = mockk {
@@ -165,5 +187,65 @@ class CycleTest {
         cycle(numDays = 10, peakDays = setOf(0, 2)).peakDayRangeIndexes.run {
             assertEquals(setOf(0, 1, 2, 3, 4, 5), this)
         }
+    }
+
+    @Test
+    fun `test coverline`() {
+        fun day(temp: Double? = null, isAbnormal: Boolean = false): Cycle.Day = mockk {
+            every { symptomEntry.temperature } returns temp?.let {
+                mockk {
+                    every { value } returns it
+                    every { abnormal } returns isAbnormal
+                }
+            }
+        }
+        //No days - no coverline
+        assertNull(Cycle(days = emptyList()).coverlineValue)
+
+        //Tons of days, no temps - no coverline
+        assertNull(Cycle(days = (0..30).map { day() }).coverlineValue)
+
+        //Tons of abnormal days - no coverline
+        assertNull(Cycle(days = (0..30).map { day(isAbnormal = true) }).coverlineValue)
+
+        //Days all increasing, but barely not enough days - no coverline
+        assertNull(Cycle(days = (1..8).map { day(temp = it.toDouble()) }).coverlineValue)
+
+        //Days all increasing, and exact number of days - coverline
+        assertEquals(6.1, Cycle(days = (1..9).map { day(temp = it.toDouble()) }).coverlineValue)
+
+        //Enough days, but always decreasing - no coverline
+        assertNull(Cycle(days = (30 downTo 1).map { day(temp = it.toDouble()) }).coverlineValue)
+
+        //All equal - no coverline
+        assertNull(Cycle(days = (0..30).map { day(temp = 0.0) }).coverlineValue)
+
+        //One value that screws it up - no coverline
+        assertNull(Cycle(days = listOf(0, 10, 0, 0, 0, 0, 0, 1, 1, 1).map { day(temp = it.toDouble()) }).coverlineValue)
+
+        //Real live cycle - coverline
+        assertEquals(
+            97.6, Cycle(
+                days = listOf(
+                    day(96.55),
+                    day(96.8),
+                    day(97.11),
+                    day(96.87),
+                    day(95.68, isAbnormal = true),
+                    day(97.04),
+                    day(96.88),
+                    day(96.68),
+                    day(96.80),
+                    day(97.5),
+                    day(96.72),
+                    day(97.07),
+                    day(97.01),
+                    day(97.84),
+                    day(97.77),
+                    day(98.05),
+                    day(97.45)
+                )
+            ).coverlineValue
+        )
     }
 }

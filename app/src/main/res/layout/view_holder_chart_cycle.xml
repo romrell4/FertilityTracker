@@ -21,6 +21,18 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Cycle #1" />
 
+        <TextView
+            android:id="@+id/cycleDatesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@id/cycleNumberText"
+            app:layout_constraintStart_toEndOf="@id/cycleNumberText"
+            app:layout_constraintTop_toTopOf="@id/cycleNumberText"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="Oct 1, 2020 - Nov 3, 2020" />
+
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="match_parent"
@@ -30,35 +42,35 @@
             app:barrierMargin="8dp"
             app:constraint_referenced_ids="cycleNumberText" />
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/headerLayout"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="end"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/barrier">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/headerLayout"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:gravity="end"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/barrier">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/dayOfCycleHeader"-->
-<!--                style="@style/CycleTableHeader"-->
-<!--                android:text="@string/dayOfCycleHeader" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/dayOfCycleHeader"-->
+        <!--                style="@style/CycleTableHeader"-->
+        <!--                android:text="@string/dayOfCycleHeader" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/dateHeader"-->
-<!--                style="@style/CycleTableHeader"-->
-<!--                android:text="@string/dateHeader" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/dateHeader"-->
+        <!--                style="@style/CycleTableHeader"-->
+        <!--                android:text="@string/dateHeader" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/stampHeader"-->
-<!--                style="@style/CycleTableHeader"-->
-<!--                android:text="@string/stampHeader" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/stampHeader"-->
+        <!--                style="@style/CycleTableHeader"-->
+        <!--                android:text="@string/stampHeader" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/sensationHeader"-->
-<!--                style="@style/CycleTableHeader"-->
-<!--                android:text="@string/sensationsHeader" />-->
-<!--        </LinearLayout>-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/sensationHeader"-->
+        <!--                style="@style/CycleTableHeader"-->
+        <!--                android:text="@string/sensationsHeader" />-->
+        <!--        </LinearLayout>-->
 
         <HorizontalScrollView
             android:id="@+id/chartScrollView"
@@ -73,16 +85,16 @@
 
             <LinearLayout
                 android:id="@+id/scrollContentView"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/daysRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/view_holder_chart_day" />
 

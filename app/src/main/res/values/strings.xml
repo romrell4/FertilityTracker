@@ -24,4 +24,5 @@
     <string name="temperature_divider">.</string>
     <string name="temp_checkbox_text">Was this temperature abnormal?</string>
     <string name="abnormal_temp_hint">Tell us why…</string>
+    <string name="cycleDates">%1$s - %2$s</string>
 </resources>

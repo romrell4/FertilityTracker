@@ -3,9 +3,13 @@ package com.romrell4.fertility_tracker.domain
 import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import java.time.LocalDate
 
 private const val NUM_NON_PEAK_MUCUS_DAYS_FOR_PEAK_DAY = 3
 private const val NUM_DAYS_IN_PEAK_RANGE = 3
+private const val COVERLINE_PREVIOUS_TEMPS = 6
+private const val COVERLINE_FOLLOWING_TEMPS = 3
+private const val COVERLINE_CONST = 0.1
 
 @Parcelize
 data class Cycle(
@@ -19,6 +23,28 @@ data class Cycle(
     ) : Parcelable, Comparable<Day> {
         override fun compareTo(other: Day): Int = compareValuesBy(this, other, { dayOfCycle })
     }
+
+    @IgnoredOnParcel
+    val startDate: LocalDate
+        get() = days.map { it.symptomEntry.date }.minOrNull() ?: throw IllegalStateException("No days in cycle")
+
+    @IgnoredOnParcel
+    val endDate: LocalDate
+        get() = days.map { it.symptomEntry.date }.maxOrNull() ?: throw IllegalStateException("No days in cycle")
+
+    @IgnoredOnParcel
+    val coverlineValue: Double?
+        get() {
+            val normalTemps = days.mapNotNull { it.symptomEntry.temperature }.filter { !it.abnormal }.map { it.value }
+            for (i in COVERLINE_PREVIOUS_TEMPS..(normalTemps.size - COVERLINE_FOLLOWING_TEMPS)) {
+                val maxOfPrevious = normalTemps.slice(i - COVERLINE_PREVIOUS_TEMPS until i).maxOrNull() ?: 0.0
+                val minOfFollowing = normalTemps.slice(i until i + COVERLINE_FOLLOWING_TEMPS).minOrNull() ?: 0.0
+                if (minOfFollowing > maxOfPrevious) {
+                    return maxOfPrevious + COVERLINE_CONST
+                }
+            }
+            return null
+        }
 
     @IgnoredOnParcel
     val peakDayIndexes: Set<Int>

@@ -13,11 +13,10 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
+import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
@@ -44,6 +43,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
 
     fun bind(cycle: ChartViewState.CycleView) {
         binding.cycleNumberText.text = itemView.context.getString(R.string.cycleNumber, cycle.cycleNumber)
+        binding.cycleDatesText.text = itemView.context.getString(R.string.cycleDates, cycle.startDate, cycle.endDate)
 
         //Scroll to the end
         binding.chartScrollView.post {
@@ -64,7 +64,8 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         description = null
         legend.isEnabled = false
         layoutParams = layoutParams.also {
-            it.width = itemView.context.resources.getDimensionPixelSize(R.dimen.chart_cell_width) * cycle.days.size + CHART_SIZE_OFFSET_PX
+            it.width =
+                itemView.context.resources.getDimensionPixelSize(R.dimen.chart_cell_width) * cycle.days.size + CHART_SIZE_OFFSET_PX
         }
 
         //Add data
@@ -86,7 +87,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         )
 
         //Configure Y-axis
-        axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        axisLeft.setDrawLabels(false) //TODO: Hack your own labels on the left
         axisLeft.axisMinimum = Y_AXIS_MIN.toFloat()
         axisLeft.axisMaximum = Y_AXIS_MAX.toFloat()
         axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / Y_AXIS_STEP).roundToInt() + 1
@@ -94,19 +95,12 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
 
         marker = TemperatureMarkerView(itemView.context)
 
-        //TODO: Implement coverline in CycleView
-        axisLeft.addLimitLine(LimitLine(98f, "Coverline"))
-
-        //Set up interactions
-        setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                //TODO: Dismiss any existing markers, and pop up a new marker
-            }
-
-            override fun onNothingSelected() {
-                //TODO: Dismiss marker
-            }
-        })
+        cycle.coverlineValue?.let {
+            axisLeft.addLimitLine(LimitLine(it.toFloat(), null).also { line ->
+                line.lineWidth = 2f
+                line.lineColor = itemView.context.getColor(R.color.stamp_blue)
+            })
+        }
     }
 
     private fun ChartViewState.CycleView.getLineData(): LineData? {
