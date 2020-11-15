@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
+import kotlin.math.roundToInt
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
     object : DiffUtil.ItemCallback<ChartViewState.CycleView>() {
@@ -85,14 +87,15 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
 
         //Configure Y-axis
         axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-        //TODO: Figure out if Jess really wants this
-//        axisLeft.axisMinimum = 94.5f
-//        axisLeft.axisMaximum = 100f
-//        axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / .1).roundToInt() + 1
+        axisLeft.axisMinimum = Y_AXIS_MIN.toFloat()
+        axisLeft.axisMaximum = Y_AXIS_MAX.toFloat()
+        axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / Y_AXIS_STEP).roundToInt() + 1
         axisRight.isEnabled = false
 
-        //TODO: V3 Implement coverline in CycleView
-//        axisRight.addLimitLine(LimitLine(98f, "Coverline"))
+        marker = TemperatureMarkerView(itemView.context)
+
+        //TODO: Implement coverline in CycleView
+        axisLeft.addLimitLine(LimitLine(98f, "Coverline"))
 
         //Set up interactions
         setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
@@ -108,19 +111,24 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
 
     private fun ChartViewState.CycleView.getLineData(): LineData? {
         return LineData(listOf(LineDataSet(days.mapIndexedNotNull { index, dayView ->
-            dayView.temperature?.toFloat()?.let {
-                Entry(index.toFloat() + 1, it)
+            dayView.temperature?.let {
+                Entry(index.toFloat() + 1, it.value.toFloat(), it)
             }
         }, "Temperature").apply {
             lineWidth = 2f
             color = itemView.context.getColor(R.color.pink_light)
             circleRadius = 4f
             setDrawCircleHole(false)
-            setCircleColor(itemView.context.getColor(R.color.pink))
+            circleColors = days.mapNotNull { day ->
+                day.temperature?.let { itemView.context.getColor(if (it.abnormal) R.color.yellow else R.color.pink) }
+            }
         }))
     }
 
     companion object {
         private const val CHART_SIZE_OFFSET_PX = 10
+        private const val Y_AXIS_MIN = 95
+        private const val Y_AXIS_MAX = 99
+        private const val Y_AXIS_STEP = .2
     }
 }

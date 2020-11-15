@@ -30,46 +30,45 @@
             app:barrierMargin="8dp"
             app:constraint_referenced_ids="cycleNumberText" />
 
-        <LinearLayout
-            android:id="@+id/headerLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/headerLayout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="end"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/barrier">-->
 
-            <TextView
-                android:id="@+id/dayOfCycleHeader"
-                style="@style/CycleTableHeader"
-                android:text="@string/dayOfCycleHeader" />
+<!--            <TextView-->
+<!--                android:id="@+id/dayOfCycleHeader"-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/dayOfCycleHeader" />-->
 
-            <TextView
-                android:id="@+id/dateHeader"
-                style="@style/CycleTableHeader"
-                android:text="@string/dateHeader" />
+<!--            <TextView-->
+<!--                android:id="@+id/dateHeader"-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/dateHeader" />-->
 
-            <TextView
-                android:id="@+id/stampHeader"
-                style="@style/CycleTableHeader"
-                android:text="@string/stampHeader" />
+<!--            <TextView-->
+<!--                android:id="@+id/stampHeader"-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/stampHeader" />-->
 
-            <TextView
-                android:id="@+id/sensationHeader"
-                style="@style/CycleTableHeader"
-                android:text="@string/sensationsHeader" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/sensationHeader"-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/sensationsHeader" />-->
+<!--        </LinearLayout>-->
 
         <HorizontalScrollView
             android:id="@+id/chartScrollView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/headerLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier">
 
             <LinearLayout

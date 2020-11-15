@@ -75,7 +75,9 @@ data class ChartState(
                             day.symptomEntry.notes?.takeIf { it.isNotBlank() }?.let { "Notes: \n$it" }
                         ).joinToString("\n\n"),
                         peakMucusRange = cycle.peakDayRangeIndexes.contains(index),
-                        temperature = day.symptomEntry.temperature?.value
+                        temperature = day.symptomEntry.temperature?.let {
+                            ChartViewState.CycleView.TemperatureView(it.value, it.abnormal, it.abnormalNotes)
+                        }
                     )
                 }
             )
@@ -99,7 +101,13 @@ data class ChartViewState(
             val dialogTitle: String,
             val dialogMessage: String?,
             val peakMucusRange: Boolean,
-            val temperature: Double?
+            val temperature: TemperatureView?
+        )
+
+        data class TemperatureView(
+            val value: Double,
+            val abnormal: Boolean,
+            val abnormalNotes: String?
         )
     }
 }
