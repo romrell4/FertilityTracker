@@ -82,7 +82,8 @@ data class ChartState(
                         peakMucusRange = cycle.peakDayRangeIndexes.contains(index),
                         temperature = day.symptomEntry.temperature?.let {
                             ChartViewState.CycleView.TemperatureView(it.value, it.abnormal, it.abnormalNotes)
-                        }
+                        },
+                        notes = day.symptomEntry.notes?.takeIf { it.isNotBlank() }
                     )
                 },
                 coverlineValue = cycle.coverlineValue
@@ -110,7 +111,8 @@ data class ChartViewState(
             val dialogTitle: String,
             val dialogMessage: String?,
             val peakMucusRange: Boolean,
-            val temperature: TemperatureView?
+            val temperature: TemperatureView?,
+            val notes: String?
         )
 
         data class TemperatureView(

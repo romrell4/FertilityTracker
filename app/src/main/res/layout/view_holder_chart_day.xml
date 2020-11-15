@@ -49,4 +49,12 @@
         android:textAlignment="center"
         android:textSize="12sp"
         tools:text="D" />
+
+    <ImageView
+        android:id="@+id/notesImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chart_cell_height"
+        android:padding="2dp"
+        android:src="@drawable/ic_info_24"
+        android:contentDescription="@string/notes_info_content_desc" />
 </LinearLayout>

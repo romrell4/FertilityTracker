@@ -2,6 +2,7 @@ package com.romrell4.fertility_tracker.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -51,5 +52,16 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
             }
         }
         binding.sensationText.text = day.sensations
+
+        binding.notesImage.isInvisible = day.notes == null
+        binding.notesImage.setOnClickListener {
+            day.notes?.let {
+                MaterialAlertDialogBuilder(itemView.context)
+                    .setTitle(itemView.context.getString(R.string.notes_dialog_title, day.date))
+                    .setMessage(it)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            }
+        }
     }
 }
