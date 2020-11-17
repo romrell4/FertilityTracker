@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 private const val STATE_KEY = "CHART_STATE_KEY"
@@ -79,7 +78,7 @@ data class ChartState(
                             day.symptomEntry.mucus?.dailyOccurrences?.let { "Number of Occurrences: $it" },
                             day.symptomEntry.notes?.takeIf { it.isNotBlank() }?.let { "Notes: \n$it" }
                         ).joinToString("\n\n"),
-                        peakMucusRange = cycle.peakDayRangeIndexes.contains(index),
+                        stampHighlighted = cycle.ruleOfThreeIndexes.contains(index),
                         temperature = day.symptomEntry.temperature?.let {
                             ChartViewState.CycleView.TemperatureView(it.value, it.abnormal, it.abnormalNotes)
                         },
@@ -110,7 +109,7 @@ data class ChartViewState(
             val sensations: String?,
             val dialogTitle: String,
             val dialogMessage: String?,
-            val peakMucusRange: Boolean,
+            val stampHighlighted: Boolean,
             val temperature: TemperatureView?,
             val notes: String?,
             var selected: Boolean = false

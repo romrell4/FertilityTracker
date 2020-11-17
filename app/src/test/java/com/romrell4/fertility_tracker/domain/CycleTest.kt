@@ -157,35 +157,41 @@ class CycleTest {
     }
 
     @Test
-    fun `test peak day ranges`() {
-        fun cycle(numDays: Int, peakDays: Set<Int> = emptySet()): Cycle =
+    fun `test rule of three indexes`() {
+        fun cycle(numDays: Int, peakDays: Set<Int> = emptySet(), spottingDays: Set<Int> = emptySet()): Cycle =
             spyk(Cycle(days = (0 until numDays).map { mockk() })) {
                 every { peakDayIndexes } returns peakDays
+                every { spottingIndexes } returns spottingDays
             }
 
-        //Test no peak days - should have no peak range
-        cycle(numDays = 0).peakDayRangeIndexes.run {
+        //Test no peak or spotting days - should have no ROT range
+        cycle(numDays = 0).ruleOfThreeIndexes.run {
             assertEquals(emptySet(), this)
         }
 
         //Test single peak day with a full range - should have a single full range
-        cycle(numDays = 10, peakDays = setOf(0)).peakDayRangeIndexes.run {
+        cycle(numDays = 10, peakDays = setOf(0)).ruleOfThreeIndexes.run {
             assertEquals(setOf(0, 1, 2, 3), this)
         }
 
-        //Test single peak day with a truncated range - should only have the indexes in range
-        cycle(numDays = 2, peakDays = setOf(0)).peakDayRangeIndexes.run {
+        //Test single spotting day with a truncated range - should only have the indexes in range
+        cycle(numDays = 2, spottingDays = setOf(0)).ruleOfThreeIndexes.run {
             assertEquals(setOf(0, 1), this)
         }
 
         //Test multiple peak days that don't overlap - should be the union of the two ranges
-        cycle(numDays = 10, peakDays = setOf(0, 5)).peakDayRangeIndexes.run {
+        cycle(numDays = 10, peakDays = setOf(0, 5)).ruleOfThreeIndexes.run {
             assertEquals(setOf(0, 1, 2, 3, 5, 6, 7, 8), this)
         }
 
-        //Test multiple peak days that overlap - should be the union with duplicates removed
-        cycle(numDays = 10, peakDays = setOf(0, 2)).peakDayRangeIndexes.run {
+        //Test multiple spotting days that overlap - should be the union with duplicates removed
+        cycle(numDays = 10, spottingDays = setOf(0, 2)).ruleOfThreeIndexes.run {
             assertEquals(setOf(0, 1, 2, 3, 4, 5), this)
+        }
+
+        //Test both peak and spotting days - should be the union of everything with dupes removed
+        cycle(numDays = 10, peakDays = setOf(1, 8), spottingDays = setOf(0, 2)).ruleOfThreeIndexes.run {
+            assertEquals(setOf(0, 1, 2, 3, 4, 5, 8, 9), this)
         }
     }
 

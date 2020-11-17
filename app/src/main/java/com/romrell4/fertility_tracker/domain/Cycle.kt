@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 import java.time.LocalDate
 
 private const val NUM_NON_PEAK_MUCUS_DAYS_FOR_PEAK_DAY = 3
-private const val NUM_DAYS_IN_PEAK_RANGE = 3
+private const val NUM_RULE_OF_THREE_DAYS = 3
 private const val COVERLINE_PREVIOUS_TEMPS = 6
 private const val COVERLINE_FOLLOWING_TEMPS = 3
 private const val COVERLINE_CONST = 0.1
@@ -76,8 +76,14 @@ data class Cycle(
         }
 
     @IgnoredOnParcel
-    val peakDayRangeIndexes: Set<Int>
-        get() = peakDayIndexes.map {
-            (it..(it + NUM_DAYS_IN_PEAK_RANGE)).filter { it < days.size }
+    val spottingIndexes: Set<Int>
+        get() = days.sorted().mapIndexedNotNull { index, day ->
+            if (day.symptomEntry.bleeding == SymptomEntry.Bleeding.SPOTTING) index else null
+        }.toSet()
+
+    @IgnoredOnParcel
+    val ruleOfThreeIndexes: Set<Int>
+        get() = (peakDayIndexes + spottingIndexes).map { index ->
+            (index..(index + NUM_RULE_OF_THREE_DAYS)).filter { it < days.size }
         }.flatten().toSet()
 }

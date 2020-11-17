@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartDayBinding
-import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
 
 class CycleDayAdapter : ListAdapter<ChartViewState.CycleView.DayView, CycleDayViewHolder>(object :
@@ -39,7 +38,7 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         binding.dateText.text = day.date
         binding.stampImage.setBackgroundResource(day.stampRes)
         binding.stampImageWrapper.setBackgroundColor(
-            itemView.context.getColor(if (day.peakMucusRange) R.color.chart_peak_range_background else android.R.color.transparent)
+            itemView.context.getColor(if (day.stampHighlighted) R.color.chart_peak_range_background else android.R.color.transparent)
         )
         binding.layout.setBackgroundColor(
             itemView.context.getColor(if (day.selected) R.color.chart_selected else android.R.color.transparent)
