@@ -73,10 +73,23 @@ Definition
 * Peak Day
   * Definition: Any occurrence in a cycle of the following: The last day of peak mucus, or the fourth consecutive day of non-peak mucus
   * UI: Background color (or alternative)
-  * After peak day, the next three days also appear differently
+  * After peak day or day of spotting, the next three days also appear differently
 
 
 ## V3
+
+### Back up data
+Possibly using firebase as a backend?
+
+### Export Cycles
+What's the purpose behind this one?
+
+### Mark days that had a notation
+What does this mean?
+
+### Select Date from Calendar
+Tap on the current day to get a calendar widget to switch days
+
 ### Sub-sensations
 
 ### Chart including Notes
