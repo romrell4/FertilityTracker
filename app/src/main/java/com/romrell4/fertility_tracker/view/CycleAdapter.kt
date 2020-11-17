@@ -111,7 +111,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         )
 
         //Configure Y-axis
-        axisLeft.setDrawLabels(false) //TODO: Hack your own labels on the left?
+        axisLeft.setDrawLabels(false)
         axisLeft.axisMinimum = Y_AXIS_MIN.toFloat()
         axisLeft.axisMaximum = Y_AXIS_MAX.toFloat()
         axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / Y_AXIS_STEP).roundToInt() + 1
@@ -132,7 +132,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
             dayView.temperature?.let {
                 Entry(index.toFloat() + 1, it.value.toFloat(), dayView)
             }
-        }, "Temperature").apply {
+        }, null).apply {
             lineWidth = 3f
             color = itemView.context.getColor(R.color.graph_line)
             circleRadius = 6f

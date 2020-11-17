@@ -19,11 +19,20 @@
         <item name="android:maxLength">1</item>
     </style>
 
-    <style name="CycleTableHeader">
+<!--    <style name="CycleTableHeader">-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">@dimen/chart_cell_height</item>-->
+<!--        <item name="android:gravity">center</item>-->
+<!--        <item name="android:textSize">12sp</item>-->
+<!--        <item name="android:background">@color/white</item>-->
+<!--        <item name="android:alpha">0.8</item>-->
+<!--    </style>-->
+
+    <style name="YAxisText">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/chart_cell_height</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:alpha">0.8</item>
     </style>
 </resources>

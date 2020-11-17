@@ -42,36 +42,6 @@
             app:barrierMargin="8dp"
             app:constraint_referenced_ids="cycleNumberText" />
 
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/headerLayout"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:gravity="end"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/barrier">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/dayOfCycleHeader"-->
-        <!--                style="@style/CycleTableHeader"-->
-        <!--                android:text="@string/dayOfCycleHeader" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/dateHeader"-->
-        <!--                style="@style/CycleTableHeader"-->
-        <!--                android:text="@string/dateHeader" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/stampHeader"-->
-        <!--                style="@style/CycleTableHeader"-->
-        <!--                android:text="@string/stampHeader" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/sensationHeader"-->
-        <!--                style="@style/CycleTableHeader"-->
-        <!--                android:text="@string/sensationsHeader" />-->
-        <!--        </LinearLayout>-->
-
         <HorizontalScrollView
             android:id="@+id/chartScrollView"
             android:layout_width="0dp"
@@ -104,6 +74,126 @@
                     tools:listitem="@layout/view_holder_chart_day" />
             </LinearLayout>
         </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/chart_height"
+            android:orientation="vertical"
+            android:gravity="start"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/chartScrollView"
+            app:layout_constraintTop_toTopOf="@id/chartScrollView">
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_99" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_8" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_6" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_4" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_2" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_98" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_8" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_6" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_4" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_2" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_97" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_8" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_6" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_4" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_2" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_96" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_8" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_6" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_4" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_point_2" />
+
+            <TextView
+                style="@style/YAxisText"
+                android:text="@string/graph_axis_95" />
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/headerLayout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="end"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/chartScrollView"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/chartScrollView">-->
+
+<!--            <TextView-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/date_header" />-->
+
+<!--            <TextView-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/stamp_header" />-->
+
+<!--            <TextView-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/sensations_header" />-->
+
+<!--            <TextView-->
+<!--                style="@style/CycleTableHeader"-->
+<!--                android:text="@string/notes_header" />-->
+<!--        </LinearLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
