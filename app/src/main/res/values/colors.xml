@@ -21,6 +21,6 @@
     <color name="chart_selected">#33FCAE1E</color>
     <color name="graph_abnormal_day">#FCAE1E</color>
     <color name="graph_normal_day">@color/pink</color>
-    <color name="graph_line">@color/pink_light</color>
+    <color name="graph_line">@color/pink</color>
     <color name="graph_coverline">@color/blue</color>
 </resources>

@@ -133,10 +133,10 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
                 Entry(index.toFloat() + 1, it.value.toFloat(), dayView)
             }
         }, "Temperature").apply {
-            lineWidth = 4f
+            lineWidth = 3f
             color = itemView.context.getColor(R.color.graph_line)
             circleRadius = 6f
-            circleHoleRadius = 4f
+            circleHoleRadius = 3f
             setDrawCircleHole(true)
             circleColors = days.mapNotNull { day ->
                 day.temperature?.let { itemView.context.getColor(if (it.abnormal) R.color.graph_abnormal_day else R.color.graph_normal_day) }

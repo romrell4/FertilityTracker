@@ -36,7 +36,6 @@ class CycleDayAdapter : ListAdapter<ChartViewState.CycleView.DayView, CycleDayVi
 
 class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(day: ChartViewState.CycleView.DayView) {
-        binding.dayOfCycleText.text = day.dayOfCycle
         binding.dateText.text = day.date
         binding.stampImage.setBackgroundResource(day.stampRes)
         binding.stampImageWrapper.setBackgroundColor(
