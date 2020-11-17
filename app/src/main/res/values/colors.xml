@@ -5,14 +5,22 @@
     <color name="pink_dark">#c94f7c</color>
     <color name="purple">#B28DFF</color>
     <color name="gray">#aaaaaa</color>
-    <color name="yellow">#FCAE1E</color>
+    <color name="blue">#6EB5FF</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <!--Stamp colors-->
-    <color name="stamp_red">#C23B22</color>
-    <color name="stamp_pink">#FFABAB</color>
-    <color name="stamp_purple">@color/purple</color>
-    <color name="stamp_blue">#6EB5FF</color>
+    <color name="stamp_bleeding">#C23B22</color>
+    <color name="stamp_non_peak_mucus">#FFABAB</color>
+    <color name="stamp_peak_mucus">@color/purple</color>
+    <color name="stamp_no_mucus">@color/blue</color>
+
+    <!--Graph colors-->
+    <color name="chart_peak_range_background">@color/pink_light</color>
+    <color name="chart_selected">#66FCAE1E</color>
+    <color name="graph_abnormal_day">#FCAE1E</color>
+    <color name="graph_normal_day">@color/pink</color>
+    <color name="graph_line">@color/pink_light</color>
+    <color name="graph_coverline">@color/blue</color>
 </resources>

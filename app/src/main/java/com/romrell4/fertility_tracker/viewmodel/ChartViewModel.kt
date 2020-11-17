@@ -112,7 +112,8 @@ data class ChartViewState(
             val dialogMessage: String?,
             val peakMucusRange: Boolean,
             val temperature: TemperatureView?,
-            val notes: String?
+            val notes: String?,
+            var selected: Boolean = false
         )
 
         data class TemperatureView(

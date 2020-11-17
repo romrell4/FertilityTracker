@@ -40,7 +40,10 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         binding.dateText.text = day.date
         binding.stampImage.setBackgroundResource(day.stampRes)
         binding.stampImageWrapper.setBackgroundColor(
-            itemView.context.getColor(if (day.peakMucusRange) R.color.pink_light else android.R.color.transparent)
+            itemView.context.getColor(if (day.peakMucusRange) R.color.chart_peak_range_background else android.R.color.transparent)
+        )
+        binding.layout.setBackgroundColor(
+            itemView.context.getColor(if (day.selected) R.color.chart_selected else android.R.color.transparent)
         )
         binding.stampImage.setOnClickListener {
             day.dialogMessage?.let { dialogMessage ->

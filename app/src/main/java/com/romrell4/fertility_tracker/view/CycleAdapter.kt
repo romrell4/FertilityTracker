@@ -13,10 +13,11 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
-import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
@@ -56,9 +57,30 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         }
         adapter.submitList(cycle.days)
 
-        binding.chart.setup(cycle)
+        //Set up chart highlighting when graph is selected
+        binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                adapter.submitList(deselectAllDays().map {
+                    if (it.date == (e?.data as? ChartViewState.CycleView.DayView)?.date) {
+                        it.copy(selected = true)
+                    } else it
+                })
+            }
 
-        //TODO: When tapping a temp on the graph, highlight the row above as well
+            override fun onNothingSelected() {
+                adapter.submitList(deselectAllDays())
+            }
+
+            private fun deselectAllDays(): List<ChartViewState.CycleView.DayView> {
+                return cycle.days.map {
+                    if (it.selected) {
+                        it.copy(selected = false)
+                    } else it
+                }
+            }
+        })
+
+        binding.chart.setup(cycle)
     }
 
     private fun LineChart.setup(cycle: ChartViewState.CycleView) {
@@ -89,7 +111,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         )
 
         //Configure Y-axis
-        axisLeft.setDrawLabels(false) //TODO: Hack your own labels on the left
+        axisLeft.setDrawLabels(false) //TODO: Hack your own labels on the left?
         axisLeft.axisMinimum = Y_AXIS_MIN.toFloat()
         axisLeft.axisMaximum = Y_AXIS_MAX.toFloat()
         axisLeft.labelCount = ((axisLeft.axisMaximum - axisLeft.axisMinimum) / Y_AXIS_STEP).roundToInt() + 1
@@ -100,7 +122,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         cycle.coverlineValue?.let {
             axisLeft.addLimitLine(LimitLine(it.toFloat(), null).also { line ->
                 line.lineWidth = 2f
-                line.lineColor = itemView.context.getColor(R.color.stamp_blue)
+                line.lineColor = itemView.context.getColor(R.color.graph_coverline)
             })
         }
     }
@@ -108,15 +130,16 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
     private fun ChartViewState.CycleView.getLineData(): LineData? {
         return LineData(listOf(LineDataSet(days.mapIndexedNotNull { index, dayView ->
             dayView.temperature?.let {
-                Entry(index.toFloat() + 1, it.value.toFloat(), it)
+                Entry(index.toFloat() + 1, it.value.toFloat(), dayView)
             }
         }, "Temperature").apply {
-            lineWidth = 2f
-            color = itemView.context.getColor(R.color.pink_light)
-            circleRadius = 4f
-            setDrawCircleHole(false)
+            lineWidth = 4f
+            color = itemView.context.getColor(R.color.graph_line)
+            circleRadius = 6f
+            circleHoleRadius = 4f
+            setDrawCircleHole(true)
             circleColors = days.mapNotNull { day ->
-                day.temperature?.let { itemView.context.getColor(if (it.abnormal) R.color.yellow else R.color.pink) }
+                day.temperature?.let { itemView.context.getColor(if (it.abnormal) R.color.graph_abnormal_day else R.color.graph_normal_day) }
             }
         }))
     }
