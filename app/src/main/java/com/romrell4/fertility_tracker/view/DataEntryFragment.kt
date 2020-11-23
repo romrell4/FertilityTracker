@@ -74,7 +74,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
             DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
-                    viewModel.selectDate(LocalDate.of(year, month, dayOfMonth))
+                    viewModel.selectDate(LocalDate.of(year, month + 1, dayOfMonth))
                 },
                 viewState.currentDate.year, viewState.currentDate.monthValue, viewState.currentDate.dayOfMonth
             ).apply {
