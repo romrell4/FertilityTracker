@@ -17,6 +17,7 @@ import com.romrell4.fertility_tracker.support.hideKeyboard
 import com.romrell4.fertility_tracker.support.showKeyboard
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 private val TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a")
 
@@ -55,10 +56,15 @@ class TemperatureDialog : DialogFragment() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                         val temperatureValue =
                             "${binding.tempText1.text}${binding.tempText2.text}.${binding.tempText3.text}${binding.tempText4.text}".toDoubleOrNull()
-                        if (temperatureValue != null) {
+                        val time = try {
+                            LocalTime.parse(binding.timeText.text, TIME_FORMATTER)
+                        } catch (e: DateTimeParseException) {
+                            null
+                        }
+                        if (temperatureValue != null && time != null) {
                             (targetFragment as? TemperatureDialogCallback)?.temperatureSaved(
                                 SymptomEntry.Temperature(
-                                    time = LocalTime.now(),
+                                    time = time,
                                     value = temperatureValue,
                                     abnormal = binding.abnormalCheckbox.isChecked,
                                     abnormalNotes = binding.abnormalText.text?.toString()
@@ -78,7 +84,7 @@ class TemperatureDialog : DialogFragment() {
         }
 
         val currentTime = LocalTime.now()
-        setTime(currentTime)
+        setTime(passedInTemp?.time ?: currentTime)
         binding.timeText.setOnClickListener {
             TimePickerDialog(
                 context,

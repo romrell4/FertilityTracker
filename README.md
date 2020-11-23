@@ -75,8 +75,24 @@ Definition
   * UI: Background color (or alternative)
   * After peak day or day of spotting, the next three days also appear differently
 
-
 ## V3
+
+### "When In Doubt"
+A checkbox near the notes section that allows you to mark a day as "In Doubt" when it comes to fertility.
+An info box can explain that "In Doubt" means that you would like to manually enforce the count-of-three rule due to unexpected temperatures and/or mucus.
+
+Needs to apply to the count-of-three rule (showing up in the chart)
+
+### Select Date from Calendar
+Tap on the current day to get a calendar widget to switch days
+Select Today
+
+### Total day in cycle (only after cycle is complete)
+Display next to
+
+### Sex in Chart (with icons)
+
+## V4
 
 ### Back up data
 Possibly using firebase as a backend?
@@ -84,27 +100,12 @@ Possibly using firebase as a backend?
 ### Export Cycles
 What's the purpose behind this one?
 
-### Mark days that had a notation
-What does this mean?
+## V5
 
-### Select Date from Calendar
-Tap on the current day to get a calendar widget to switch days
-
-### Sub-sensations
-
-### Chart including Notes
-New row in chart
-* If the first character in the notes is an emoji, display emoji
-* If the first character is a letter, display (i)
-
-In both cases, display the full notes text on tap
-
+### For Me tab
+* Average Length of Cycle
+* TODO
 
 ### Filter Which Attributes are Displayed in Chart
 
-
-### View Average Length of Cycle
-
-### Graph Points as Color of Stamps (optional)
-
-### Sex in Chart (with icons)
+### Sub-sensations
