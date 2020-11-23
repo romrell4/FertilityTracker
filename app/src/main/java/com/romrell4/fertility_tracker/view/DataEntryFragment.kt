@@ -1,5 +1,6 @@
 package com.romrell4.fertility_tracker.view
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ import com.romrell4.fertility_tracker.viewmodel.DataEntryViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
@@ -67,6 +70,17 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
     private fun render(viewState: DataEntryViewState) {
         //Date
         binding.currentDateView.text = DATE_FORMATTER.format(viewState.currentDate)
+        binding.currentDateView.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    viewModel.selectDate(LocalDate.of(year, month, dayOfMonth))
+                },
+                viewState.currentDate.year, viewState.currentDate.monthValue, viewState.currentDate.dayOfMonth
+            ).apply {
+                datePicker.maxDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            }.show()
+        }
         binding.nextDateButton.visibility = if (viewState.canSelectNextDate) View.VISIBLE else View.INVISIBLE
 
         //Buttons

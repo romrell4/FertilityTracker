@@ -48,7 +48,7 @@ class DataEntryViewModel @JvmOverloads constructor(
         selectDate(nextDate)
     }
 
-    private fun selectDate(date: LocalDate) {
+    fun selectDate(date: LocalDate) {
         stateFlow.value = DataEntryState(
             //If we can't find one, create a new one for that date
             symptomEntry = findSymptomEntryUseCase.execute(date) ?: SymptomEntry(date = date)
