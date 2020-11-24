@@ -1,6 +1,7 @@
 package com.romrell4.fertility_tracker.view
 
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -79,6 +80,9 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
                 viewState.currentDate.year, viewState.currentDate.monthValue, viewState.currentDate.dayOfMonth
             ).apply {
                 datePicker.maxDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                setButton(DialogInterface.BUTTON_NEUTRAL, "Today") { _, _ ->
+                    viewModel.selectDate(LocalDate.now())
+                }
             }.show()
         }
         binding.nextDateButton.visibility = if (viewState.canSelectNextDate) View.VISIBLE else View.INVISIBLE
