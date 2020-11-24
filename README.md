@@ -91,7 +91,7 @@ Needs to apply to the count-of-three rule (showing up in the chart)
 [x] Display next to the dates?
 
 ### Sex in Chart (with icons)
-Add to bottom of chart
+[x] Add to bottom of chart
 
 ## V4
 
