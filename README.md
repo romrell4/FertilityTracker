@@ -84,11 +84,11 @@ An info box can explain that "In Doubt" means that you would like to manually en
 Needs to apply to the count-of-three rule (showing up in the chart)
 
 ### Select Date from Calendar
-Tap on the current day to get a calendar widget to switch days
-Select Today
+[x] Tap on the current day to get a calendar widget to switch days
+[x] Select Today
 
-### Total day in cycle (only after cycle is complete)
-Display next to
+### Total days in cycle (only after cycle is complete)
+Display next to the dates?
 
 ### Sex in Chart (with icons)
 

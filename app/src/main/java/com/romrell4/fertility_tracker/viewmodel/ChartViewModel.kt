@@ -41,7 +41,8 @@ class ChartViewModel @JvmOverloads constructor(
     }
 }
 
-private val CYCLE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy")
+private val CYCLE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yy")
+private val DIALOG_TITLE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @Parcelize
 data class ChartState(
@@ -70,7 +71,7 @@ data class ChartState(
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
                             else -> null
                         },
-                        dialogTitle = "${day.symptomEntry.date.format(DateTimeFormatter.ofPattern("EEEE, MMM d"))} (Day ${day.dayOfCycle})",
+                        dialogTitle = "${day.symptomEntry.date.format(DIALOG_TITLE_FORMATTER)} (Day ${day.dayOfCycle})",
                         dialogMessage = listOfNotNull(
                             day.symptomEntry.bleeding?.displayText?.let { "Flow: $it" },
                             day.symptomEntry.mucus?.consistency?.displayText?.let { "Consistency: $it" },
