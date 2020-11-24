@@ -41,7 +41,7 @@ class ChartViewModel @JvmOverloads constructor(
     }
 }
 
-private val CYCLE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yy")
+private val CYCLE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy")
 private val DIALOG_TITLE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @Parcelize
@@ -54,6 +54,7 @@ data class ChartState(
                 cycleNumber = cycle.cycleNumber,
                 startDate = cycle.startDate.format(CYCLE_DATE_FORMATTER),
                 endDate = cycle.endDate.format(CYCLE_DATE_FORMATTER),
+                length = cycle.days.size,
                 days = cycle.days.mapIndexed { index, day ->
                     ChartViewState.CycleView.DayView(
                         dayOfCycle = day.dayOfCycle.toString(),
@@ -99,6 +100,7 @@ data class ChartViewState(
         val cycleNumber: Int,
         val startDate: String,
         val endDate: String,
+        val length: Int,
         val days: List<DayView>,
         val coverlineValue: Double?
     ) {

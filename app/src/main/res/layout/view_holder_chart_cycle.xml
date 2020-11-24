@@ -21,17 +21,32 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Cycle #1" />
 
-        <TextView
-            android:id="@+id/cycleDatesText"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginStart="16dp"
-            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@id/cycleNumberText"
             app:layout_constraintStart_toEndOf="@id/cycleNumberText"
             app:layout_constraintTop_toTopOf="@id/cycleNumberText"
-            app:layout_constraintVertical_bias="0.5"
-            tools:text="Oct 1, 2020 - Nov 3, 2020" />
+            app:layout_constraintVertical_bias="0.5">
+
+            <TextView
+                android:id="@+id/cycleDatesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="12sp"
+                tools:text="Oct 1, 2020 - Nov 3, 2020" />
+
+            <TextView
+                android:id="@+id/cycleLengthText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="12sp"
+                tools:text="Cycle Length: 28 days" />
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"

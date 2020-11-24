@@ -44,7 +44,8 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
 
     fun bind(cycle: ChartViewState.CycleView) {
         binding.cycleNumberText.text = itemView.context.getString(R.string.cycleNumber, cycle.cycleNumber)
-        binding.cycleDatesText.text = itemView.context.getString(R.string.cycleDates, cycle.startDate, cycle.endDate)
+        binding.cycleDatesText.text = itemView.context.getString(R.string.cycle_dates, cycle.startDate, cycle.endDate)
+        binding.cycleLengthText.text = itemView.context.getString(R.string.cycle_length, cycle.length)
 
         //Scroll to the end
         binding.chartScrollView.post {
