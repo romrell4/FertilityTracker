@@ -72,6 +72,11 @@ data class ChartState(
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
                             else -> null
                         },
+                        sexRes = when (day.symptomEntry.sex) {
+                            SymptomEntry.Sex.PROTECTED -> R.drawable.ic_sex_protected
+                            SymptomEntry.Sex.UNPROTECTED -> R.drawable.ic_sex_unprotected
+                            else -> null
+                        },
                         dialogTitle = "${day.symptomEntry.date.format(DIALOG_TITLE_FORMATTER)} (Day ${day.dayOfCycle})",
                         dialogMessage = listOfNotNull(
                             day.symptomEntry.bleeding?.displayText?.let { "Flow: $it" },
@@ -110,6 +115,8 @@ data class ChartViewState(
             @DrawableRes
             val stampRes: Int,
             val sensations: String?,
+            @DrawableRes
+            val sexRes: Int?,
             val dialogTitle: String,
             val dialogMessage: String?,
             val stampHighlighted: Boolean,

@@ -54,6 +54,8 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         }
         binding.sensationText.text = day.sensations
 
+        binding.sexImage.setBackgroundResource(day.sexRes ?: 0)
+
         binding.notesImage.isInvisible = day.notes == null
         binding.notesImage.setOnClickListener {
             day.notes?.let {

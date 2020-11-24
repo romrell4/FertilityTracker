@@ -8,4 +8,5 @@
     <dimen name="date_arrows_size">32dp</dimen>
     <dimen name="temp_text_width">40dp</dimen>
     <dimen name="chart_height">320dp</dimen>
+    <dimen name="sex_icon_size">20dp</dimen>
 </resources>
