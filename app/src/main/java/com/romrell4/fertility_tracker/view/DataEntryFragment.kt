@@ -2,9 +2,12 @@ package com.romrell4.fertility_tracker.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -54,9 +57,6 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
         //Dates
         binding.previousDateButton.setOnClickListener { viewModel.selectPreviousDate() }
         binding.nextDateButton.setOnClickListener { viewModel.selectNextDate() }
-
-        //Notes
-        binding.notesText.addTextChangedListener { viewModel.saveNotes(it?.toString()) }
     }
 
     override fun mucusSaved(mucus: SymptomEntry.Mucus?) {
@@ -126,6 +126,19 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
             binding.notesText.setText(viewState.notes)
             binding.notesText.setSelection(viewState.notes?.length ?: 0)
         }
+
+        //Notes
+        binding.notesText.setTextChangedListener {
+            if (it?.toString().orEmpty() != viewState.notes.orEmpty()) {
+                viewModel.saveNotes(it?.toString())
+            }
+        }
+    }
+
+    private var editTextListeners: MutableMap<EditText, TextWatcher> = mutableMapOf()
+    private fun EditText.setTextChangedListener(listener: (Editable?) -> Unit) {
+        editTextListeners[this]?.let { removeTextChangedListener(it) }
+        editTextListeners[this] = addTextChangedListener { listener(it) }
     }
 
     private fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
