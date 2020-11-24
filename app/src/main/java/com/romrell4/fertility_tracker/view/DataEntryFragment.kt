@@ -124,7 +124,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
         if (binding.notesText.text.toString() != viewState.notes) {
             //If the notes are out of date, update them, and set the cursor to the end of the text
             binding.notesText.setText(viewState.notes)
-            binding.notesText.setSelection(viewState.notes?.length ?: 0)
+            binding.notesText.setSelection(viewState.notes.orEmpty().length)
         }
 
         //Notes
