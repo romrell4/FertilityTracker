@@ -88,14 +88,16 @@ Needs to apply to the count-of-three rule (showing up in the chart)
 [x] Select Today
 
 ### Total days in cycle (only after cycle is complete)
-Display next to the dates?
+[x] Display next to the dates?
 
 ### Sex in Chart (with icons)
+Add to bottom of chart
 
 ## V4
 
 ### Back up data
-Possibly using firebase as a backend?
+Already done using shared preferences
+[ ] Just need to put the app on the play store to make this work
 
 ### Export Cycles
 What's the purpose behind this one?
