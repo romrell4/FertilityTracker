@@ -78,10 +78,10 @@ Definition
 ## V3
 
 ### "When In Doubt"
-A checkbox near the notes section that allows you to mark a day as "In Doubt" when it comes to fertility.
+[x] A checkbox near the notes section that allows you to mark a day as "In Doubt" when it comes to fertility.
 An info box can explain that "In Doubt" means that you would like to manually enforce the count-of-three rule due to unexpected temperatures and/or mucus.
 
-Needs to apply to the count-of-three rule (showing up in the chart)
+[x] Needs to apply to the count-of-three rule (showing up in the chart)
 
 ### Select Date from Calendar
 [x] Tap on the current day to get a calendar widget to switch days
