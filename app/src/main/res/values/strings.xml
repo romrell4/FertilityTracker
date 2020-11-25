@@ -37,4 +37,5 @@
     <string name="graph_axis_97">97.0</string>
     <string name="graph_axis_96">96.0</string>
     <string name="graph_axis_95">95.0</string>
+    <string name="in_doubt_label">"In Doubt?"</string>
 </resources>

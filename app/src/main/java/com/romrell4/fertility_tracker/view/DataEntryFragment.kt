@@ -96,6 +96,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
         binding.mucusButton.setupSymptomButton(viewState.mucus)
         binding.bleedingButton.setupSymptomButton(viewState.bleeding)
         binding.sexButton.setupSymptomButton(viewState.sex)
+        binding.inDoubtButton.setupSymptomButton(viewState.inDoubt)
         binding.temperatureButton.setupSymptomButton(viewState.temperature)
 
         binding.sensationsButton.setUpRadioDialogListener(
@@ -118,6 +119,9 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
             currentValue = viewState.sex,
             viewModelFunction = viewModel::selectSex
         )
+        binding.inDoubtButton.setOnClickListener {
+            viewModel.setInDoubt(if (viewState.inDoubt != true) true else null)
+        }
         binding.temperatureButton.setOnClickListener {
             TemperatureDialog.newInstance(viewState.temperature).also {
                 it.setTargetFragment(this, 0)

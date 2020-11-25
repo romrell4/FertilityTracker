@@ -13,6 +13,7 @@ data class SymptomEntry(
     val mucus: Mucus? = null,
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
+    val inDoubt: Boolean? = null,
     val temperature: Temperature? = null,
     val notes: String? = null
 ) : Parcelable, Comparable<SymptomEntry> {

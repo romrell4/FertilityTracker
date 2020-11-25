@@ -75,6 +75,10 @@ class DataEntryViewModel @JvmOverloads constructor(
         updateSymptomEntry { it.copy(temperature = temperature) }
     }
 
+    fun setInDoubt(inDoubt: Boolean?) {
+        updateSymptomEntry { it.copy(inDoubt = inDoubt) }
+    }
+
     fun saveNotes(notes: String?) {
         updateSymptomEntry { it.copy(notes = notes) }
     }
@@ -96,6 +100,7 @@ data class DataEntryState(
         mucus = symptomEntry.mucus,
         bleeding = symptomEntry.bleeding,
         sex = symptomEntry.sex,
+        inDoubt = symptomEntry.inDoubt,
         notes = symptomEntry.notes,
         temperature = symptomEntry.temperature,
         canSelectNextDate = symptomEntry.date < LocalDate.now()
@@ -108,6 +113,7 @@ data class DataEntryViewState(
     val mucus: SymptomEntry.Mucus?,
     val bleeding: SymptomEntry.Bleeding?,
     val sex: SymptomEntry.Sex?,
+    val inDoubt: Boolean?,
     val notes: String?,
     val temperature: SymptomEntry.Temperature?,
     val canSelectNextDate: Boolean

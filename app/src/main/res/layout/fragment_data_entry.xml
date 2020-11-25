@@ -91,11 +91,15 @@
                     android:text="@string/sex_button_title" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inDoubtButton"
+                    style="@style/SymptomButton"
+                    android:contentDescription="@string/in_doubt_label"
+                    android:drawableTop="@drawable/ic_in_doubt"
+                    android:text="@string/in_doubt_label" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/temperatureButton"
                     style="@style/SymptomButton"
-                    android:layout_column="0"
-                    android:layout_columnSpan="2"
-                    android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/temperature_title"
                     android:drawableTop="@drawable/ic_temperature"
                     android:text="@string/temperature_title" />
