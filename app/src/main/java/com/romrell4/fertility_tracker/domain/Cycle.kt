@@ -82,8 +82,14 @@ data class Cycle(
         }.toSet()
 
     @IgnoredOnParcel
+    val whenInDoubtIndexes: Set<Int>
+        get() = days.sorted().mapIndexedNotNull { index, day ->
+            if (day.symptomEntry.inDoubt == true) index else null
+        }.toSet()
+
+    @IgnoredOnParcel
     val ruleOfThreeIndexes: Set<Int>
-        get() = (peakDayIndexes + spottingIndexes).map { index ->
+        get() = (peakDayIndexes + spottingIndexes + whenInDoubtIndexes).map { index ->
             (index..(index + NUM_RULE_OF_THREE_DAYS)).filter { it < days.size }
         }.flatten().toSet()
 }

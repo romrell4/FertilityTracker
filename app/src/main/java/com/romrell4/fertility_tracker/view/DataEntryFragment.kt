@@ -41,7 +41,7 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDataEntryBinding.inflate(inflater, container, false)
         return binding.root
     }

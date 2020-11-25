@@ -158,10 +158,11 @@ class CycleTest {
 
     @Test
     fun `test rule of three indexes`() {
-        fun cycle(numDays: Int, peakDays: Set<Int> = emptySet(), spottingDays: Set<Int> = emptySet()): Cycle =
+        fun cycle(numDays: Int, peakDays: Set<Int> = emptySet(), spottingDays: Set<Int> = emptySet(), inDoubtDays: Set<Int> = emptySet()): Cycle =
             spyk(Cycle(days = (0 until numDays).map { mockk() })) {
                 every { peakDayIndexes } returns peakDays
                 every { spottingIndexes } returns spottingDays
+                every { whenInDoubtIndexes } returns inDoubtDays
             }
 
         //Test no peak or spotting days - should have no ROT range
@@ -192,6 +193,11 @@ class CycleTest {
         //Test both peak and spotting days - should be the union of everything with dupes removed
         cycle(numDays = 10, peakDays = setOf(1, 8), spottingDays = setOf(0, 2)).ruleOfThreeIndexes.run {
             assertEquals(setOf(0, 1, 2, 3, 4, 5, 8, 9), this)
+        }
+
+        //Test a when in doubt day as well
+        cycle(numDays = 10, inDoubtDays = setOf(1)).ruleOfThreeIndexes.run {
+            assertEquals(setOf(1, 2, 3, 4), this)
         }
     }
 
