@@ -1,0 +1,2 @@
+json_key_file("~/Documents/Credentials/api-6218101441904677962-180856-1347e41ca116.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.romrell4.fertility_tracker") # e.g. com.krausefx.app

@@ -29,4 +29,6 @@ class DI(
     val saveSymptomEntryUseCase: SaveSymptomEntryUseCase by lazy { SaveSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
     val findSymptomEntryUseCase: FindSymptomEntryUseCase by lazy { FindSymptomEntryUseCaseImpl(fertilityTrackingRepo) }
     val getAllCyclesUseCase: GetAllCyclesUseCase by lazy { GetAllCyclesUseCaseImpl(fertilityTrackingRepo) }
+    val exportDataUseCase: ExportDataUseCase by lazy { ExportDataUseCaseImpl(fertilityTrackingRepo) }
+    val importDataUseCase: ImportDataUseCase by lazy { ImportDataUseCaseImpl(fertilityTrackingRepo) }
 }

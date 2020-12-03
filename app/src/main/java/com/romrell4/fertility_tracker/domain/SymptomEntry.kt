@@ -1,6 +1,7 @@
 package com.romrell4.fertility_tracker.domain
 
 import android.os.Parcelable
+import com.fasterxml.jackson.annotation.JsonIgnore
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.time.LocalDate
@@ -71,16 +72,19 @@ data class SymptomEntry(
     }
 
     @IgnoredOnParcel
+    @get:JsonIgnore
     val hasPeakMucus: Boolean
         get() = mucus?.consistency == Mucus.Consistency.STRETCHY ||
                 mucus?.color == Mucus.Color.CLEAR ||
                 sensation == Sensation.LUBRICATIVE
 
     @IgnoredOnParcel
+    @get:JsonIgnore
     val hasNonPeakMucus: Boolean
         get() = mucus != null && !hasPeakMucus
 
     @IgnoredOnParcel
+    @get:JsonIgnore
     val hasRealBleeding: Boolean
         get() = bleeding != null && bleeding != Bleeding.SPOTTING
 

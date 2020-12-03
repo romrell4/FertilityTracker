@@ -97,9 +97,10 @@ An info box can explain that "In Doubt" means that you would like to manually en
 
 ### Back up data
 Already done using shared preferences
-[ ] Just need to put the app on the play store to make this work
+[x] Just need to put the app on the play store to make this work
+[x] Get back up from local build to play store build (import/export)
 
-### Export Cycles
+### Export Cycles (PDF)
 What's the purpose behind this one?
 
 ## V5

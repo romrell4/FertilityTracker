@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -30,7 +29,7 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCallback {
+class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialogCallback {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }
@@ -66,6 +65,10 @@ class DataEntryFragment : Fragment(), MucusDialogCallback, TemperatureDialogCall
 
     override fun temperatureSaved(temperature: SymptomEntry.Temperature?) {
         viewModel.saveTemperature(temperature)
+    }
+
+    override fun reload() {
+        viewModel.reload()
     }
 
     private fun render(viewState: DataEntryViewState) {

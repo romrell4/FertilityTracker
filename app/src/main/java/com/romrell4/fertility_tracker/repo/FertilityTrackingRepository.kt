@@ -11,6 +11,8 @@ import java.time.LocalDate
 interface FertilityTrackingRepository {
     fun saveSymptomEntry(symptomEntry: SymptomEntry)
     fun getAllSymptomEntries(): Map<LocalDate, SymptomEntry>
+    fun exportData(): String?
+    fun importData(serializedData: String)
 }
 
 private const val SP_NAME = "FertilityTracking"
@@ -39,5 +41,18 @@ class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepos
         return sharedPrefs.getString(SP_SYMPTOM_ENTRIES_KEY, null)?.let {
             objectMapper.readValue(it)
         } ?: emptyMap()
+    }
+
+    override fun exportData(): String? {
+        return sharedPrefs.getString(SP_SYMPTOM_ENTRIES_KEY, null)
+    }
+
+    override fun importData(serializedData: String) {
+        //Make sure that we can serialize the value
+        objectMapper.readValue<Map<LocalDate, SymptomEntry>>(serializedData)
+
+        sharedPrefs.edit {
+            putString(SP_SYMPTOM_ENTRIES_KEY, serializedData)
+        }
     }
 }

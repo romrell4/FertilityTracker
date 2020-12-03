@@ -38,6 +38,10 @@ class DataEntryViewModel @JvmOverloads constructor(
         }
     }
 
+    fun reload() {
+        selectDate(stateFlow.value.symptomEntry.date)
+    }
+
     fun selectPreviousDate() {
         val previousDate = stateFlow.value.symptomEntry.date.minusDays(1)
         selectDate(previousDate)

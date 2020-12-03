@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class ChartFragment : Fragment() {
+class ChartFragment : MainFragment() {
     private val viewModel: ChartViewModel by viewModels {
         defaultViewModelProviderFactory
     }
@@ -28,7 +27,7 @@ class ChartFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLiveChartBinding.inflate(inflater)
         return binding.root
     }
@@ -47,6 +46,10 @@ class ChartFragment : Fragment() {
             it.layoutManager = LinearLayoutManager(context)
         }
 
+        viewModel.loadAllEntries()
+    }
+
+    override fun reload() {
         viewModel.loadAllEntries()
     }
 
