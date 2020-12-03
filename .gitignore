@@ -17,3 +17,4 @@ local.properties
 app/release
 fastlane/report.xml
 *.swp
+keystore.properties
