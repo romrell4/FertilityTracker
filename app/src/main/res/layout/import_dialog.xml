@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:maxLines="3"
         android:layout_margin="16dp"
         android:hint="@string/import_data_hint"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,7 +15,7 @@ android {
         applicationId "com.romrell4.fertility_tracker"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 6
+        versionCode 7
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
