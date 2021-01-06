@@ -20,7 +20,7 @@ import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
 import kotlin.math.roundToInt
 
-class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
+class CycleAdapter(private val delegate: ExportDelegate) : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
     object : DiffUtil.ItemCallback<ChartViewState.CycleView>() {
         override fun areItemsTheSame(oldItem: ChartViewState.CycleView, newItem: ChartViewState.CycleView): Boolean =
             oldItem.cycleNumber == newItem.cycleNumber
@@ -31,7 +31,7 @@ class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CycleViewHolder {
         val binding = ViewHolderChartCycleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CycleViewHolder(binding)
+        return CycleViewHolder(delegate, binding)
     }
 
     override fun onBindViewHolder(holder: CycleViewHolder, position: Int) {
@@ -39,13 +39,17 @@ class CycleAdapter : ListAdapter<ChartViewState.CycleView, CycleViewHolder>(
     }
 }
 
-class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : RecyclerView.ViewHolder(binding.root) {
+class CycleViewHolder(private val delegate: ExportDelegate, private val binding: ViewHolderChartCycleBinding) : RecyclerView.ViewHolder(binding.root) {
     private val adapter = CycleDayAdapter()
 
     fun bind(cycle: ChartViewState.CycleView) {
         binding.cycleNumberText.text = itemView.context.getString(R.string.cycleNumber, cycle.cycleNumber)
         binding.cycleDatesText.text = itemView.context.getString(R.string.cycle_dates, cycle.startDate, cycle.endDate)
         binding.cycleLengthText.text = itemView.context.getString(R.string.cycle_length, cycle.length)
+
+        binding.exportButton.setOnClickListener {
+            delegate.exportCycleView(binding, "Cycle #${cycle.cycleNumber} (${System.currentTimeMillis()})")
+        }
 
         //Scroll to the end
         binding.chartScrollView.post {
@@ -128,7 +132,7 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         }
     }
 
-    private fun ChartViewState.CycleView.getLineData(): LineData? {
+    private fun ChartViewState.CycleView.getLineData(): LineData {
         return LineData(listOf(LineDataSet(days.mapIndexedNotNull { index, dayView ->
             dayView.temperature?.let {
                 Entry(index.toFloat() + 1, it.value.toFloat(), dayView)
@@ -151,4 +155,8 @@ class CycleViewHolder(private val binding: ViewHolderChartCycleBinding) : Recycl
         private const val Y_AXIS_MAX = 99
         private const val Y_AXIS_STEP = .2
     }
+}
+
+interface ExportDelegate {
+    fun exportCycleView(binding: ViewHolderChartCycleBinding, filename: String)
 }

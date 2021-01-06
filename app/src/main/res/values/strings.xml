@@ -12,10 +12,6 @@
     <string name="mucus_color_label">Color</string>
     <string name="mucus_occurrences_label">Daily Occurrences</string>
     <string name="save">Save</string>
-<!--    <string name="date_header">Date</string>-->
-<!--    <string name="stamp_header">Stamp</string>-->
-<!--    <string name="sensations_header">Sens</string>-->
-<!--    <string name="notes_header">Notes</string>-->
     <string name="cycleNumber">Cycle #%1$d</string>
     <string name="previous_date_button_content_desc">Select previous date</string>
     <string name="next_date_button_content_desc">Select next date</string>
@@ -45,4 +41,5 @@
     <string name="import_dialog_message">This feature is to allow you to import your data that has been previously exported. It it strongly recommended to export your current data before importing, as an import will overwrite all your current tracking data.</string>
     <string name="import_success_message">Your data has been successfully imported!</string>
     <string name="import_data_hint">Serialized JSON data</string>
+    <string name="export_cycle_content_desc">Tap to export this cycle to a file</string>
 </resources>
