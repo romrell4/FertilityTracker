@@ -22,6 +22,7 @@
             tools:text="Cycle #1" />
 
         <LinearLayout
+            android:id="@+id/cycleDetailsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -100,6 +101,7 @@
         </HorizontalScrollView>
 
         <LinearLayout
+            android:id="@+id/yAxisLayout"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/chart_height"
             android:orientation="vertical"

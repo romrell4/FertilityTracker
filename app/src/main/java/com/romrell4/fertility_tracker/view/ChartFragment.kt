@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,8 +92,30 @@ class ChartFragment : MainFragment(), ExportDelegate {
 
     private fun doExport(binding: ViewHolderChartCycleBinding, filename: String) {
         getOutputStream(filename).use {
-            binding.chartScrollView.getBitmap(binding.scrollContentView.height, binding.scrollContentView.width)
-                .compress(Bitmap.CompressFormat.PNG, 0, it) // PNG is lossless, so quality will be ignored
+            val bitmap = Bitmap.createBitmap(
+                binding.root.width - binding.chartScrollView.width + binding.scrollContentView.width,
+                binding.root.height,
+                Bitmap.Config.ARGB_8888
+            )
+            Canvas(bitmap).also { canvas ->
+                // Set the background
+                canvas.drawColor(Color.WHITE)
+
+                fun View.draw(x: Float = this.x, y: Float = this.y) {
+                    println("Moving to ($x, $y)")
+                    canvas.translate(x, y)
+                    println("Drawing")
+                    draw(canvas)
+                    println("Moving back to the origin")
+                    canvas.translate(-x, -y)
+                }
+                binding.cycleNumberText.draw()
+                binding.cycleDetailsLayout.draw()
+                binding.yAxisLayout.draw()
+                binding.scrollContentView.draw(binding.chartScrollView.x, binding.chartScrollView.y)
+            }
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, it) // PNG is lossless, so quality will be ignored
             it.flush()
             it.close()
         }
@@ -102,15 +125,6 @@ class ChartFragment : MainFragment(), ExportDelegate {
             "You're file has been saved to your Downloads folder as '$filename'",
             Toast.LENGTH_LONG
         ).show()
-    }
-
-    private fun View.getBitmap(height: Int, width: Int): Bitmap {
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { bitmap ->
-            Canvas(bitmap).also { canvas ->
-                if (background != null) background.draw(canvas) else canvas.drawColor(Color.WHITE)
-                draw(canvas)
-            }
-        }
     }
 
     private fun getOutputStream(filename: String): OutputStream {
