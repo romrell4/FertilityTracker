@@ -6,12 +6,13 @@
     <color name="purple">#B28DFF</color>
     <color name="gray">#aaaaaa</color>
     <color name="blue">#6EB5FF</color>
+    <color name="bleeding">#C23B22</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <!--Stamp colors-->
-    <color name="stamp_bleeding">#C23B22</color>
+    <color name="stamp_bleeding">@color/bleeding</color>
     <color name="stamp_non_peak_mucus">#FFABAB</color>
     <color name="stamp_peak_mucus">@color/purple</color>
     <color name="stamp_no_mucus">@color/blue</color>

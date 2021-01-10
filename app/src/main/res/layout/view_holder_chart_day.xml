@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/stampImage"
-            android:layout_width="@dimen/stamp_size"
-            android:layout_height="@dimen/stamp_size"
+            android:layout_width="@dimen/chart_icon_size"
+            android:layout_height="@dimen/chart_icon_size"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_circle_peak_mucus" />
     </LinearLayout>
@@ -42,14 +42,42 @@
         tools:text="D" />
 
     <LinearLayout
+        android:id="@+id/observationImageWrapper"
+        android:layout_width="@dimen/chart_cell_width"
+        android:layout_height="@dimen/chart_cell_height"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/observationImage"
+            android:layout_width="@dimen/chart_icon_size"
+            android:layout_height="@dimen/chart_icon_size"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_observation_wet" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bleedingImageWrapper"
+        android:layout_width="@dimen/chart_cell_width"
+        android:layout_height="@dimen/chart_cell_height"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/bleedingImage"
+            android:layout_width="@dimen/chart_icon_size"
+            android:layout_height="@dimen/chart_icon_size"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_bleeding_heavy" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="@dimen/chart_cell_width"
         android:layout_height="@dimen/chart_cell_height"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/sexImage"
-            android:layout_width="@dimen/sex_icon_size"
-            android:layout_height="@dimen/sex_icon_size"
+            android:layout_width="@dimen/chart_icon_size"
+            android:layout_height="@dimen/chart_icon_size"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_sex_protected" />
     </LinearLayout>

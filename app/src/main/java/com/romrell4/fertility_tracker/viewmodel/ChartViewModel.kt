@@ -72,6 +72,18 @@ data class ChartState(
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
                             else -> null
                         },
+                        observationRes = when (day.symptomEntry.observation) {
+                            SymptomEntry.Observation.DAMP -> R.drawable.ic_observation_damp
+                            SymptomEntry.Observation.WET -> R.drawable.ic_observation_wet
+                            SymptomEntry.Observation.SHINY -> R.drawable.ic_observation_shiny
+                            else -> null
+                        },
+                        bleedingRes = when (day.symptomEntry.bleeding) {
+                            SymptomEntry.Bleeding.LIGHT -> R.drawable.ic_bleeding_light
+                            SymptomEntry.Bleeding.MODERATE -> R.drawable.ic_bleeding_moderate
+                            SymptomEntry.Bleeding.HEAVY -> R.drawable.ic_bleeding_heavy
+                            else -> null
+                        },
                         sexRes = when (day.symptomEntry.sex) {
                             SymptomEntry.Sex.PROTECTED -> R.drawable.ic_sex_protected
                             SymptomEntry.Sex.UNPROTECTED -> R.drawable.ic_sex_unprotected
@@ -115,6 +127,10 @@ data class ChartViewState(
             @DrawableRes
             val stampRes: Int,
             val sensations: String?,
+            @DrawableRes
+            val observationRes: Int?,
+            @DrawableRes
+            val bleedingRes: Int?,
             @DrawableRes
             val sexRes: Int?,
             val dialogTitle: String,
