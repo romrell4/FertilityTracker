@@ -96,16 +96,21 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
         }
 
         binding.sensationsButton.setupSymptomButton(viewState.sensation)
+        binding.observationsButton.setupSymptomButton(viewState.observation)
         binding.mucusButton.setupSymptomButton(viewState.mucus)
         binding.bleedingButton.setupSymptomButton(viewState.bleeding)
         binding.sexButton.setupSymptomButton(viewState.sex)
-        binding.inDoubtButton.setupSymptomButton(viewState.inDoubt)
         binding.temperatureButton.setupSymptomButton(viewState.temperature)
 
         binding.sensationsButton.setUpRadioDialogListener(
             values = SymptomEntry.Sensation.values(),
             currentValue = viewState.sensation,
             viewModelFunction = viewModel::selectSensation
+        )
+        binding.observationsButton.setUpRadioDialogListener(
+            values = SymptomEntry.Observation.values(),
+            currentValue = viewState.observation,
+            viewModelFunction = viewModel::selectObservation
         )
         binding.mucusButton.setOnClickListener {
             MucusDialog.newInstance(viewState.mucus).also {
@@ -122,9 +127,6 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
             currentValue = viewState.sex,
             viewModelFunction = viewModel::selectSex
         )
-        binding.inDoubtButton.setOnClickListener {
-            viewModel.setInDoubt(if (viewState.inDoubt != true) true else null)
-        }
         binding.temperatureButton.setOnClickListener {
             TemperatureDialog.newInstance(viewState.temperature).also {
                 it.setTargetFragment(this, 0)
@@ -137,12 +139,14 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
             binding.notesText.setText(viewState.notes)
             binding.notesText.setSelection(viewState.notes.orEmpty().length)
         }
-
-        //Notes
         binding.notesText.setTextChangedListener {
             if (it?.toString().orEmpty() != viewState.notes.orEmpty()) {
                 viewModel.saveNotes(it?.toString())
             }
+        }
+        binding.inDoubtCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            // Set it to "null" if it's not checked
+            viewModel.setInDoubt(isChecked.takeIf { it })
         }
     }
 

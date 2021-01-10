@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="SymptomButton">
-        <item name="android:layout_height">@dimen/button_size</item>
-        <item name="android:layout_width">@dimen/button_size</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">@dimen/button_width</item>
         <item name="android:backgroundTint">@color/purple</item>
         <item name="android:textSize">12sp</item>
         <item name="cornerRadius">20dp</item>
@@ -18,15 +18,6 @@
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
     </style>
-
-<!--    <style name="CycleTableHeader">-->
-<!--        <item name="android:layout_width">wrap_content</item>-->
-<!--        <item name="android:layout_height">@dimen/chart_cell_height</item>-->
-<!--        <item name="android:gravity">center</item>-->
-<!--        <item name="android:textSize">12sp</item>-->
-<!--        <item name="android:background">@color/white</item>-->
-<!--        <item name="android:alpha">0.8</item>-->
-<!--    </style>-->
 
     <style name="YAxisText">
         <item name="android:layout_width">wrap_content</item>

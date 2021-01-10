@@ -63,6 +63,10 @@ class DataEntryViewModel @JvmOverloads constructor(
         updateSymptomEntry { it.copy(sensation = sensation) }
     }
 
+    fun selectObservation(observation: SymptomEntry.Observation?) {
+        updateSymptomEntry { it.copy(observation = observation) }
+    }
+
     fun saveMucus(mucus: SymptomEntry.Mucus?) {
         updateSymptomEntry { it.copy(mucus = mucus) }
     }
@@ -101,6 +105,7 @@ data class DataEntryState(
     fun toViewState() = DataEntryViewState(
         currentDate = symptomEntry.date,
         sensation = symptomEntry.sensation,
+        observation = symptomEntry.observation,
         mucus = symptomEntry.mucus,
         bleeding = symptomEntry.bleeding,
         sex = symptomEntry.sex,
@@ -114,6 +119,7 @@ data class DataEntryState(
 data class DataEntryViewState(
     val currentDate: LocalDate,
     val sensation: SymptomEntry.Sensation?,
+    val observation: SymptomEntry.Observation?,
     val mucus: SymptomEntry.Mucus?,
     val bleeding: SymptomEntry.Bleeding?,
     val sex: SymptomEntry.Sex?,

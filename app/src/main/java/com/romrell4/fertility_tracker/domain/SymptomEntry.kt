@@ -11,6 +11,7 @@ import java.time.LocalTime
 data class SymptomEntry(
     val date: LocalDate,
     val sensation: Sensation? = null,
+    val observation: Observation? = null,
     val mucus: Mucus? = null,
     val bleeding: Bleeding? = null,
     val sex: Sex? = null,
@@ -22,6 +23,13 @@ data class SymptomEntry(
         DRY("Dry"),
         SMOOTH("Smooth"),
         LUBRICATIVE("Lubricative")
+    }
+
+    enum class Observation(override val displayText: String) : Symptom {
+        DRY("Dry"),
+        DAMP("Damp"),
+        WET("Wet"),
+        SHINY("Shiny")
     }
 
     @Parcelize

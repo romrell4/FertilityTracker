@@ -67,7 +67,7 @@ data class ChartState(
                             else -> R.drawable.ic_circle_no_mucus
                         },
                         sensations = when (day.symptomEntry.sensation) {
-                            SymptomEntry.Sensation.DRY -> "D"
+                            SymptomEntry.Sensation.DRY -> null
                             SymptomEntry.Sensation.SMOOTH -> "S"
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
                             else -> null
