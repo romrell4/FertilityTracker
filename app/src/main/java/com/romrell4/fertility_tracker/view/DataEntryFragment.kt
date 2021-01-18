@@ -3,20 +3,15 @@ package com.romrell4.fertility_tracker.view
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.romrell4.fertility_tracker.R
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.romrell4.fertility_tracker.databinding.FragmentDataEntryBinding
-import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewModel
 import com.romrell4.fertility_tracker.viewmodel.DataEntryViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,12 +24,24 @@ import java.time.format.DateTimeFormatter
 private val DATE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @ExperimentalCoroutinesApi
-class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialogCallback {
+class DataEntryFragment : MainFragment() {
     private val viewModel: DataEntryViewModel by viewModels {
         defaultViewModelProviderFactory
     }
 
     private lateinit var binding: FragmentDataEntryBinding
+    private val viewPagerAdapter by lazy { DayViewPagerAdapter(this) }
+    private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
+        set(value) {
+            field?.let {
+                binding.dayViewPager.unregisterOnPageChangeCallback(it)
+            }
+            binding.dayViewPager.currentItem = 1
+            value?.let {
+                binding.dayViewPager.registerOnPageChangeCallback(it)
+            }
+            field = value
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,17 +61,7 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
             }
         }
 
-        //Dates
-        binding.previousDateButton.setOnClickListener { viewModel.selectPreviousDate() }
-        binding.nextDateButton.setOnClickListener { viewModel.selectNextDate() }
-    }
-
-    override fun mucusSaved(mucus: SymptomEntry.Mucus?) {
-        viewModel.saveMucus(mucus)
-    }
-
-    override fun temperatureSaved(temperature: SymptomEntry.Temperature?) {
-        viewModel.saveTemperature(temperature)
+        binding.dayViewPager.adapter = viewPagerAdapter
     }
 
     override fun reload() {
@@ -88,97 +85,38 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
                 }
             }.show()
         }
-        binding.nextDateButton.visibility = if (viewState.canSelectNextDate) View.VISIBLE else View.INVISIBLE
+        binding.previousDateButton.setOnClickListener { viewModel.selectDate(viewState.previousDate) }
+        binding.nextDateButton.visibility = if (viewState.nextDate != null) View.VISIBLE else View.INVISIBLE
+        binding.nextDateButton.setOnClickListener { viewState.nextDate?.let { viewModel.selectDate(it) } }
 
-        //Buttons
-        fun MaterialButton.setupSymptomButton(symptom: Any?) {
-            setBackgroundColor(resources.getColor(if (symptom == null) R.color.gray else R.color.purple, null))
-        }
+        viewPagerAdapter.dates = viewState.dates
 
-        binding.sensationsButton.setupSymptomButton(viewState.sensation)
-        binding.observationsButton.setupSymptomButton(viewState.observation)
-        binding.mucusButton.setupSymptomButton(viewState.mucus)
-        binding.bleedingButton.setupSymptomButton(viewState.bleeding)
-        binding.sexButton.setupSymptomButton(viewState.sex)
-        binding.temperatureButton.setupSymptomButton(viewState.temperature)
+//        binding.dayViewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
+//        binding.dayViewPager.currentItem = 1 // Always set it to the middle one
 
-        binding.sensationsButton.setUpRadioDialogListener(
-            values = SymptomEntry.Sensation.values(),
-            currentValue = viewState.sensation,
-            viewModelFunction = viewModel::selectSensation
-        )
-        binding.observationsButton.setUpRadioDialogListener(
-            values = SymptomEntry.Observation.values(),
-            currentValue = viewState.observation,
-            viewModelFunction = viewModel::selectObservation
-        )
-        binding.mucusButton.setOnClickListener {
-            MucusDialog.newInstance(viewState.mucus).also {
-                it.setTargetFragment(this, 0)
-            }.show(parentFragmentManager, null)
-        }
-        binding.bleedingButton.setUpRadioDialogListener(
-            values = SymptomEntry.Bleeding.values(),
-            currentValue = viewState.bleeding,
-            viewModelFunction = viewModel::selectBleeding
-        )
-        binding.sexButton.setUpRadioDialogListener(
-            values = SymptomEntry.Sex.values(),
-            currentValue = viewState.sex,
-            viewModelFunction = viewModel::selectSex
-        )
-        binding.temperatureButton.setOnClickListener {
-            TemperatureDialog.newInstance(viewState.temperature).also {
-                it.setTargetFragment(this, 0)
-            }.show(parentFragmentManager, null)
-        }
+        onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
 
-        //Notes
-        if (binding.notesText.text.toString() != viewState.notes) {
-            //If the notes are out of date, update them, and set the cursor to the end of the text
-            binding.notesText.setText(viewState.notes)
-            binding.notesText.setSelection(viewState.notes.orEmpty().length)
-        }
-        binding.notesText.setTextChangedListener {
-            if (it?.toString().orEmpty() != viewState.notes.orEmpty()) {
-                viewModel.saveNotes(it?.toString())
+                post {
+                    viewModel.selectDate(viewPagerAdapter.dates[position])
+                }
             }
         }
-        binding.inDoubtCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            // Set it to "null" if it's not checked
-            viewModel.setInDoubt(isChecked.takeIf { it })
-        }
     }
 
-    private var editTextListeners: MutableMap<EditText, TextWatcher> = mutableMapOf()
-    private fun EditText.setTextChangedListener(listener: (Editable?) -> Unit) {
-        editTextListeners[this]?.let { removeTextChangedListener(it) }
-        editTextListeners[this] = addTextChangedListener { listener(it) }
-    }
+    class DayViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+        var dates: List<LocalDate> = emptyList()
+            set(value) {
+                if (field != value) {
+                    notifyDataSetChanged()
+                }
+                field = value
+            }
 
-    private fun <T : SymptomEntry.Symptom> MaterialButton.setUpRadioDialogListener(
-        values: Array<T>,
-        currentValue: T?,
-        viewModelFunction: (T?) -> Unit
-    ) {
-        setOnClickListener {
-            var selectedValue = currentValue ?: values.first()
-            MaterialAlertDialogBuilder(requireContext())
-                .setSingleChoiceItems(
-                    values.map { it.displayText }.toTypedArray(),
-                    values.indexOf(selectedValue)
-                ) { _, i ->
-                    selectedValue = values[i]
-                }
-                .setPositiveButton(getString(R.string.alert_positive_text)) { _, _ ->
-                    viewModelFunction(selectedValue)
-                }
-                .setNeutralButton(android.R.string.cancel, null)
-                .setNegativeButton(context.getString(R.string.clear)) { _, _ ->
-                    viewModelFunction(null)
-                }
-                .show()
-        }
+        override fun getItemCount() = dates.size
+
+        override fun createFragment(position: Int) = SingleDayDataEntryFragment.newInstance(dates[position])
     }
 
     companion object {
