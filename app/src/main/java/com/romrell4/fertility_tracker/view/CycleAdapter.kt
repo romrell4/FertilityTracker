@@ -125,6 +125,7 @@ class CycleViewHolder(private val delegate: ExportDelegate, private val binding:
         marker = TemperatureMarkerView(itemView.context)
 
         cycle.coverlineValue?.let {
+            axisLeft.removeAllLimitLines()
             axisLeft.addLimitLine(LimitLine(it.toFloat(), null).also { line ->
                 line.lineWidth = 2f
                 line.lineColor = itemView.context.getColor(R.color.graph_coverline)
