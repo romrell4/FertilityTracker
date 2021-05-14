@@ -82,6 +82,29 @@
             tools:src="@drawable/ic_sex_protected" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/moodText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chart_cell_height"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        tools:text="H" />
+
+    <LinearLayout
+        android:layout_width="@dimen/chart_cell_width"
+        android:layout_height="@dimen/chart_cell_height"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/energyImage"
+            android:layout_width="@dimen/chart_icon_size"
+            android:layout_height="@dimen/chart_icon_size"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_energy_high" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/notesImage"
         android:layout_width="match_parent"

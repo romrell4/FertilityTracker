@@ -4,6 +4,8 @@ import android.app.Activity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
+fun Int.toEmoji() = String(Character.toChars(this))
+
 fun View.showKeyboard() {
     (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)
         ?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)

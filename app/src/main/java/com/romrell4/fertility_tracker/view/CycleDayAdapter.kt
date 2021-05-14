@@ -35,39 +35,43 @@ class CycleDayAdapter : ListAdapter<ChartViewState.CycleView.DayView, CycleDayVi
 
 class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(day: ChartViewState.CycleView.DayView) {
-        binding.dateText.text = day.date
-        binding.stampImage.setBackgroundResource(day.stampRes)
-        binding.stampImageWrapper.setBackgroundColor(
-            itemView.context.getColor(if (day.stampHighlighted) R.color.chart_peak_range_background else android.R.color.transparent)
-        )
         binding.layout.setBackgroundColor(
             itemView.context.getColor(if (day.selected) R.color.chart_selected else android.R.color.transparent)
         )
-        binding.stampImage.setOnClickListener {
-            day.dialogMessage?.let { dialogMessage ->
-                MaterialAlertDialogBuilder(itemView.context)
-                    .setTitle(day.dialogTitle)
-                    .setMessage(dialogMessage)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+
+        binding.dateText.text = day.date
+        binding.stampImageWrapper.setBackgroundColor(
+            itemView.context.getColor(if (day.stampHighlighted) R.color.chart_peak_range_background else android.R.color.transparent)
+        )
+        binding.stampImage.apply {
+            setBackgroundResource(day.stampRes)
+            setOnClickListener {
+                day.dialogMessage?.let { dialogMessage ->
+                    MaterialAlertDialogBuilder(itemView.context)
+                        .setTitle(day.dialogTitle)
+                        .setMessage(dialogMessage)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                }
             }
         }
         binding.sensationText.text = day.sensations
-
         binding.observationImage.setBackgroundResource(day.observationRes ?: 0)
-
         binding.bleedingImage.setBackgroundResource(day.bleedingRes ?: 0)
-
         binding.sexImage.setBackgroundResource(day.sexRes ?: 0)
+        binding.moodText.text = day.moodEmoji
+        binding.energyImage.setBackgroundResource(day.energyRes ?: 0)
 
-        binding.notesImage.isInvisible = day.notes == null
-        binding.notesImage.setOnClickListener {
-            day.notes?.let {
-                MaterialAlertDialogBuilder(itemView.context)
-                    .setTitle(itemView.context.getString(R.string.notes_dialog_title, day.date))
-                    .setMessage(it)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+        binding.notesImage.apply {
+            isInvisible = day.notes == null
+            setOnClickListener {
+                day.notes?.let {
+                    MaterialAlertDialogBuilder(itemView.context)
+                        .setTitle(itemView.context.getString(R.string.notes_dialog_title, day.date))
+                        .setMessage(it)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                }
             }
         }
     }

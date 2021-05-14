@@ -101,6 +101,8 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
         binding.bleedingButton.setupSymptomButton(viewState.bleeding)
         binding.sexButton.setupSymptomButton(viewState.sex)
         binding.temperatureButton.setupSymptomButton(viewState.temperature)
+        binding.moodButton.setupSymptomButton(viewState.mood)
+        binding.energyButton.setupSymptomButton(viewState.energy)
 
         binding.sensationsButton.setUpRadioDialogListener(
             values = SymptomEntry.Sensation.values(),
@@ -132,6 +134,16 @@ class DataEntryFragment : MainFragment(), MucusDialogCallback, TemperatureDialog
                 it.setTargetFragment(this, 0)
             }.show(parentFragmentManager, null)
         }
+        binding.moodButton.setUpRadioDialogListener(
+            values = SymptomEntry.Mood.values(),
+            currentValue = viewState.mood,
+            viewModelFunction = viewModel::selectMood
+        )
+        binding.energyButton.setUpRadioDialogListener(
+            values = SymptomEntry.Energy.values(),
+            currentValue = viewState.energy,
+            viewModelFunction = viewModel::selectEnergy
+        )
 
         //Notes
         if (binding.notesText.text.toString() != viewState.notes) {

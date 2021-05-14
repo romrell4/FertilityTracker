@@ -7,6 +7,8 @@
     <string name="mucus_button_title">Mucus</string>
     <string name="bleeding_button_title">Bleeding</string>
     <string name="sex_button_title">Sex</string>
+    <string name="mood_button_title">Emotions</string>
+    <string name="energy_button_title">Energy</string>
     <string name="alert_positive_text">Select</string>
     <string name="notes_hint">Notes about today…</string>
     <string name="mucus_consistency_label">Consistency</string>

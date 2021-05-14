@@ -2,6 +2,7 @@ package com.romrell4.fertility_tracker.domain
 
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.romrell4.fertility_tracker.support.toEmoji
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.time.LocalDate
@@ -17,6 +18,8 @@ data class SymptomEntry(
     val sex: Sex? = null,
     val inDoubt: Boolean? = null,
     val temperature: Temperature? = null,
+    val mood: Mood? = null,
+    val energy: Energy? = null,
     val notes: String? = null
 ) : Parcelable, Comparable<SymptomEntry> {
     enum class Sensation(override val displayText: String) : Symptom {
@@ -74,6 +77,24 @@ data class SymptomEntry(
         val abnormal: Boolean = false,
         val abnormalNotes: String? = null
     ) : Parcelable
+
+    enum class Mood(text: String, emojiUnicode: Int) : Symptom {
+        HAPPY("Happy", 0x1F603),
+        IRRITABLE("Irritable", 0x1F612),
+        ANGRY("Angry", 0x1F621),
+        SAD("Sad/Sensitive", 0x1F625),
+        CHILL("Chill", 0x1F60C);
+
+        val emoji: String = emojiUnicode.toEmoji()
+
+        override val displayText: String = "$emoji $text"
+    }
+
+    enum class Energy(override val displayText: String) : Symptom {
+        LOW("Low"),
+        MEDIUM("Medium"),
+        HIGH("High"),
+    }
 
     interface Symptom {
         val displayText: String

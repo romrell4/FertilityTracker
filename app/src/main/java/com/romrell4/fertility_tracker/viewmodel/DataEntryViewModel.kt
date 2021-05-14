@@ -83,6 +83,14 @@ class DataEntryViewModel @JvmOverloads constructor(
         updateSymptomEntry { it.copy(temperature = temperature) }
     }
 
+    fun selectMood(mood: SymptomEntry.Mood?) {
+        updateSymptomEntry { it.copy(mood = mood) }
+    }
+
+    fun selectEnergy(energy: SymptomEntry.Energy?) {
+        updateSymptomEntry { it.copy(energy = energy) }
+    }
+
     fun setInDoubt(inDoubt: Boolean?) {
         updateSymptomEntry { it.copy(inDoubt = inDoubt) }
     }
@@ -112,6 +120,8 @@ data class DataEntryState(
         inDoubt = symptomEntry.inDoubt,
         notes = symptomEntry.notes,
         temperature = symptomEntry.temperature,
+        mood = symptomEntry.mood,
+        energy = symptomEntry.energy,
         canSelectNextDate = symptomEntry.date < LocalDate.now()
     )
 }
@@ -126,5 +136,7 @@ data class DataEntryViewState(
     val inDoubt: Boolean?,
     val notes: String?,
     val temperature: SymptomEntry.Temperature?,
+    val mood: SymptomEntry.Mood?,
+    val energy: SymptomEntry.Energy?,
     val canSelectNextDate: Boolean
 )

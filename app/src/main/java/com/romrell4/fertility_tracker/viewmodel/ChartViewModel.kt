@@ -60,7 +60,6 @@ data class ChartState(
                         dayOfCycle = day.dayOfCycle.toString(),
                         date = day.symptomEntry.date.format(DateTimeFormatter.ofPattern("M/d")),
                         stampRes = when {
-                            //TODO: Combined stamps?
                             day.symptomEntry.hasPeakMucus -> R.drawable.ic_circle_peak_mucus
                             day.symptomEntry.hasNonPeakMucus -> R.drawable.ic_circle_non_peak_mucus
                             day.symptomEntry.bleeding != null -> R.drawable.ic_circle_bleeding
@@ -70,24 +69,24 @@ data class ChartState(
                             SymptomEntry.Sensation.DRY -> null
                             SymptomEntry.Sensation.SMOOTH -> "S"
                             SymptomEntry.Sensation.LUBRICATIVE -> "L"
-                            else -> null
+                            null -> null
                         },
                         observationRes = when (day.symptomEntry.observation) {
                             SymptomEntry.Observation.DAMP -> R.drawable.ic_observation_damp
                             SymptomEntry.Observation.WET -> R.drawable.ic_observation_wet
                             SymptomEntry.Observation.SHINY -> R.drawable.ic_observation_shiny
-                            else -> null
+                            null, SymptomEntry.Observation.DRY -> null
                         },
                         bleedingRes = when (day.symptomEntry.bleeding) {
                             SymptomEntry.Bleeding.LIGHT -> R.drawable.ic_bleeding_light
                             SymptomEntry.Bleeding.MODERATE -> R.drawable.ic_bleeding_moderate
                             SymptomEntry.Bleeding.HEAVY -> R.drawable.ic_bleeding_heavy
-                            else -> null
+                            null, SymptomEntry.Bleeding.SPOTTING -> null
                         },
                         sexRes = when (day.symptomEntry.sex) {
                             SymptomEntry.Sex.PROTECTED -> R.drawable.ic_sex_protected
                             SymptomEntry.Sex.UNPROTECTED -> R.drawable.ic_sex_unprotected
-                            else -> null
+                            null -> null
                         },
                         dialogTitle = "${day.symptomEntry.date.format(DIALOG_TITLE_FORMATTER)} (Day ${day.dayOfCycle})",
                         dialogMessage = listOfNotNull(
@@ -100,6 +99,13 @@ data class ChartState(
                         stampHighlighted = cycle.ruleOfThreeIndexes.contains(index),
                         temperature = day.symptomEntry.temperature?.let {
                             ChartViewState.CycleView.TemperatureView(it.value, it.abnormal, it.abnormalNotes)
+                        },
+                        moodEmoji = day.symptomEntry.mood?.emoji,
+                        energyRes = when (day.symptomEntry.energy) {
+                            SymptomEntry.Energy.LOW -> R.drawable.ic_energy_low
+                            SymptomEntry.Energy.MEDIUM -> R.drawable.ic_energy_medium
+                            SymptomEntry.Energy.HIGH -> R.drawable.ic_energy_high
+                            null -> null
                         },
                         notes = day.symptomEntry.notes?.takeIf { it.isNotBlank() }
                     )
@@ -137,6 +143,9 @@ data class ChartViewState(
             val dialogMessage: String?,
             val stampHighlighted: Boolean,
             val temperature: TemperatureView?,
+            val moodEmoji: String?,
+            @DrawableRes
+            val energyRes: Int?,
             val notes: String?,
             var selected: Boolean = false
         )

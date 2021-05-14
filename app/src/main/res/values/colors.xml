@@ -26,4 +26,5 @@
     <color name="graph_normal_day">@color/pink</color>
     <color name="graph_line">@color/pink</color>
     <color name="graph_coverline">@color/blue</color>
+    <color name="graph_energy_yellow">#FFFF00</color>
 </resources>
