@@ -7,7 +7,7 @@ import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.FindSymptomEntryUseCase
 import com.romrell4.fertility_tracker.usecase.SaveSymptomEntryUseCase
 import com.romrell4.fertility_tracker.view.DI
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate

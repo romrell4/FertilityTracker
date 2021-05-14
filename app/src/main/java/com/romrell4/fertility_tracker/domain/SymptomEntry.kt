@@ -3,8 +3,8 @@ package com.romrell4.fertility_tracker.domain
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.romrell4.fertility_tracker.support.toEmoji
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.LocalTime
 

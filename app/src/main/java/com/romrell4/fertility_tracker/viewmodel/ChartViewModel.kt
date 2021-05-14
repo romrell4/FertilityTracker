@@ -9,7 +9,7 @@ import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.GetAllCyclesUseCase
 import com.romrell4.fertility_tracker.view.DI
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,8 +1,8 @@
 package com.romrell4.fertility_tracker.domain
 
 import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 private const val NUM_NON_PEAK_MUCUS_DAYS_FOR_PEAK_DAY = 3
