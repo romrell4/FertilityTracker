@@ -5,9 +5,12 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.romrell4.fertility_tracker.R
+import com.romrell4.fertility_tracker.domain.ChartRow
 import com.romrell4.fertility_tracker.domain.Cycle
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import com.romrell4.fertility_tracker.usecase.GetAllCyclesUseCase
+import com.romrell4.fertility_tracker.usecase.GetHiddenChartRowsUseCase
+import com.romrell4.fertility_tracker.usecase.SaveHiddenChartRowsUseCase
 import com.romrell4.fertility_tracker.view.DI
 import kotlinx.parcelize.Parcelize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,14 +25,16 @@ private const val STATE_KEY = "CHART_STATE_KEY"
 @ExperimentalCoroutinesApi
 class ChartViewModel @JvmOverloads constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getAllCycles: GetAllCyclesUseCase = DI.instance.getAllCyclesUseCase
+    private val getAllCyclesUseCase: GetAllCyclesUseCase = DI.instance.getAllCyclesUseCase,
+    private val getHiddenChartRowsUseCase: GetHiddenChartRowsUseCase = DI.instance.getHiddenChartRowsUseCase,
+    private val saveHiddenChartRowsUseCase: SaveHiddenChartRowsUseCase = DI.instance.saveHiddenChartRowsUseCase
 ) : ViewModel() {
     val viewStateFlow: Flow<ChartViewState> by lazy {
         stateFlow.map { it.toViewState() }
     }
 
     private val stateFlow: MutableStateFlow<ChartState> = MutableStateFlow(
-        savedStateHandle.get(STATE_KEY) ?: ChartState(cycles = emptyList())
+        savedStateHandle.get(STATE_KEY) ?: ChartState(cycles = emptyList(), hiddenRows = emptyList())
     ).also {
         it.onEach { state ->
             savedStateHandle.set(STATE_KEY, state)
@@ -37,7 +42,15 @@ class ChartViewModel @JvmOverloads constructor(
     }
 
     fun loadAllEntries() {
-        stateFlow.value = ChartState(getAllCycles.execute())
+        stateFlow.value = ChartState(getAllCyclesUseCase.execute(), getHiddenChartRowsUseCase.execute())
+    }
+
+    fun getHiddenChartRows(): List<ChartRow> {
+        return getHiddenChartRowsUseCase.execute()
+    }
+
+    fun saveHiddenChartRows(hiddenRows: List<ChartRow>) {
+        saveHiddenChartRowsUseCase.execute(hiddenRows)
     }
 }
 
@@ -46,7 +59,8 @@ private val DIALOG_TITLE_FORMATTER = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 @Parcelize
 data class ChartState(
-    val cycles: List<Cycle>
+    val cycles: List<Cycle>,
+    val hiddenRows: List<ChartRow>,
 ) : Parcelable {
     fun toViewState() = ChartViewState(
         cycles = cycles.map { cycle ->
@@ -107,12 +121,13 @@ data class ChartState(
                             SymptomEntry.Energy.HIGH -> R.drawable.ic_energy_high
                             null -> null
                         },
-                        notes = day.symptomEntry.notes?.takeIf { it.isNotBlank() }
+                        notes = day.symptomEntry.notes?.takeIf { it.isNotBlank() },
+                        hiddenRows = hiddenRows,
                     )
                 },
                 coverlineValue = cycle.coverlineValue
             )
-        }
+        },
     )
 }
 
@@ -147,7 +162,8 @@ data class ChartViewState(
             @DrawableRes
             val energyRes: Int?,
             val notes: String?,
-            var selected: Boolean = false
+            var selected: Boolean = false,
+            val hiddenRows: List<ChartRow>
         )
 
         data class TemperatureView(

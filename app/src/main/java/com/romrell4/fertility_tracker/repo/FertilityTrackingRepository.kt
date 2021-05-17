@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.*
+import com.romrell4.fertility_tracker.domain.ChartRow
 import com.romrell4.fertility_tracker.domain.SymptomEntry
 import java.time.LocalDate
 
@@ -13,10 +14,13 @@ interface FertilityTrackingRepository {
     fun getAllSymptomEntries(): Map<LocalDate, SymptomEntry>
     fun exportData(): String?
     fun importData(serializedData: String)
+    fun getHiddenChartRows(): List<ChartRow>
+    fun saveHiddenChartRows(rows: List<ChartRow>)
 }
 
 private const val SP_NAME = "FertilityTracking"
 private const val SP_SYMPTOM_ENTRIES_KEY = "SymptomEntries"
+private const val SP_HIDDEN_CHART_ROWS_KEY = "HiddenChartRows"
 
 class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepository {
     private val sharedPrefs = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
@@ -30,10 +34,7 @@ class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepos
             it[symptomEntry.date] = symptomEntry
         }
         sharedPrefs.edit {
-            putString(
-                SP_SYMPTOM_ENTRIES_KEY,
-                objectMapper.writeValueAsString(entries)
-            )
+            putString(SP_SYMPTOM_ENTRIES_KEY, objectMapper.writeValueAsString(entries))
         }
     }
 
@@ -53,6 +54,18 @@ class FertilityTrackingRepositoryImpl(context: Context) : FertilityTrackingRepos
 
         sharedPrefs.edit {
             putString(SP_SYMPTOM_ENTRIES_KEY, serializedData)
+        }
+    }
+
+    override fun getHiddenChartRows(): List<ChartRow> {
+        return sharedPrefs.getString(SP_HIDDEN_CHART_ROWS_KEY, null)?.let {
+            objectMapper.readValue(it)
+        } ?: emptyList()
+    }
+
+    override fun saveHiddenChartRows(rows: List<ChartRow>) {
+        sharedPrefs.edit {
+            putString(SP_HIDDEN_CHART_ROWS_KEY, objectMapper.writeValueAsString(rows))
         }
     }
 }

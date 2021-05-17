@@ -39,6 +39,7 @@
     <string name="in_doubt_label">Are you \"In Doubt\" about today\'s fertility?</string>
     <string name="export_option_title">Export Data</string>
     <string name="import_option_title">Import Data</string>
+    <string name="filter_option_title">Filter Rows</string>
     <string name="import_error_message">There was an error importing this data. Please recopy your data and try again.</string>
     <string name="export_success_message">Your data has been successfully exported to your clipboard. Paste it somewhere safe.</string>
     <string name="import_dialog_message">This feature is to allow you to import your data that has been previously exported. It it strongly recommended to export your current data before importing, as an import will overwrite all your current tracking data.</string>

@@ -1,28 +1,32 @@
 package com.romrell4.fertility_tracker.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartDayBinding
+import com.romrell4.fertility_tracker.domain.ChartRow
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
 
-class CycleDayAdapter : ListAdapter<ChartViewState.CycleView.DayView, CycleDayViewHolder>(object :
-    DiffUtil.ItemCallback<ChartViewState.CycleView.DayView>() {
-    override fun areItemsTheSame(
-        oldItem: ChartViewState.CycleView.DayView,
-        newItem: ChartViewState.CycleView.DayView
-    ): Boolean = oldItem.dayOfCycle == newItem.dayOfCycle
+class CycleDayAdapter : ListAdapter<ChartViewState.CycleView.DayView, CycleDayViewHolder>(
+    object : DiffUtil.ItemCallback<ChartViewState.CycleView.DayView>() {
+        override fun areItemsTheSame(
+            oldItem: ChartViewState.CycleView.DayView,
+            newItem: ChartViewState.CycleView.DayView
+        ): Boolean = oldItem.dayOfCycle == newItem.dayOfCycle
 
-    override fun areContentsTheSame(
-        oldItem: ChartViewState.CycleView.DayView,
-        newItem: ChartViewState.CycleView.DayView
-    ): Boolean = oldItem == newItem
-}) {
+        override fun areContentsTheSame(
+            oldItem: ChartViewState.CycleView.DayView,
+            newItem: ChartViewState.CycleView.DayView
+        ): Boolean = oldItem == newItem
+    }
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CycleDayViewHolder {
         val binding = ViewHolderChartDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CycleDayViewHolder(binding)
@@ -38,6 +42,10 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
         binding.layout.setBackgroundColor(
             itemView.context.getColor(if (day.selected) R.color.chart_selected else android.R.color.transparent)
         )
+
+        day.hiddenRows.forEach {
+            it.toView().isVisible = false
+        }
 
         binding.dateText.text = day.date
         binding.stampImageWrapper.setBackgroundColor(
@@ -74,5 +82,17 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
                 }
             }
         }
+    }
+
+    fun ChartRow.toView(): View = when (this) {
+        ChartRow.DATE -> binding.dateText
+        ChartRow.STAMP -> binding.stampImageWrapper
+        ChartRow.SENSATION -> binding.sensationText
+        ChartRow.OBSERVATION -> binding.observationImageWrapper
+        ChartRow.BLEEDING -> binding.bleedingImageWrapper
+        ChartRow.SEX -> binding.sexImageWrapper
+        ChartRow.MOOD -> binding.moodText
+        ChartRow.ENERGY -> binding.energyImageWrapper
+        ChartRow.NOTES -> binding.notesImage
     }
 }

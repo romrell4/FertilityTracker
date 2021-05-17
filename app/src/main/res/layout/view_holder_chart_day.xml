@@ -70,6 +70,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/sexImageWrapper"
         android:layout_width="@dimen/chart_cell_width"
         android:layout_height="@dimen/chart_cell_height"
         android:gravity="center">
@@ -93,6 +94,7 @@
         tools:text="H" />
 
     <LinearLayout
+        android:id="@+id/energyImageWrapper"
         android:layout_width="@dimen/chart_cell_width"
         android:layout_height="@dimen/chart_cell_height"
         android:gravity="center">

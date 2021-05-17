@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.romrell4.fertility_tracker.domain
 
 import android.os.Parcelable
@@ -83,7 +85,8 @@ data class SymptomEntry(
         IRRITABLE("Irritable", 0x1F612),
         ANGRY("Angry", 0x1F621),
         SAD("Sad/Sensitive", 0x1F625),
-        CHILL("Chill", 0x1F60C);
+        CHILL("Chill", 0x1F60C),
+        STRESSED("Stressed", 0x1F62C);
 
         val emoji: String = emojiUnicode.toEmoji()
 

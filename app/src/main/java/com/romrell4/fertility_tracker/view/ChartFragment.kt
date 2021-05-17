@@ -9,18 +9,18 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.romrell4.fertility_tracker.R
 import com.romrell4.fertility_tracker.databinding.FragmentLiveChartBinding
 import com.romrell4.fertility_tracker.databinding.ViewHolderChartCycleBinding
+import com.romrell4.fertility_tracker.domain.ChartRow
 import com.romrell4.fertility_tracker.viewmodel.ChartViewModel
 import com.romrell4.fertility_tracker.viewmodel.ChartViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,6 +47,11 @@ class ChartFragment : MainFragment(), ExportDelegate {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +76,38 @@ class ChartFragment : MainFragment(), ExportDelegate {
         }
 
         viewModel.loadAllEntries()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.chart_menu_options, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter_rows -> {
+                val hiddenRows = viewModel.getHiddenChartRows()
+                val filterValues: MutableList<Pair<ChartRow, Boolean>> = ChartRow.values().map {
+                    it to (it !in hiddenRows)
+                }.toMutableList()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Filter Rows")
+                    .setMultiChoiceItems(
+                        filterValues.map { it.first.displayText }.toTypedArray(),
+                        filterValues.map { it.second }.toBooleanArray()
+                    ) { _, which, isChecked ->
+                        filterValues[which] = filterValues[which].copy(second = isChecked)
+                    }
+                    .setPositiveButton(R.string.save) { _, _ ->
+                        val newHiddenRows = filterValues.filter { !it.second }.map { it.first }
+                        viewModel.saveHiddenChartRows(newHiddenRows)
+                        reload()
+                    }
+                    .show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun reload() {
