@@ -43,10 +43,6 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
             itemView.context.getColor(if (day.selected) R.color.chart_selected else android.R.color.transparent)
         )
 
-        day.hiddenRows.forEach {
-            it.toView().isVisible = false
-        }
-
         binding.dateText.text = day.date
         binding.stampImageWrapper.setBackgroundColor(
             itemView.context.getColor(if (day.stampHighlighted) R.color.chart_peak_range_background else android.R.color.transparent)
@@ -81,6 +77,11 @@ class CycleDayViewHolder(private val binding: ViewHolderChartDayBinding) : Recyc
                         .show()
                 }
             }
+        }
+
+        // Hide rows that they've deselected
+        day.hiddenRows.forEach {
+            it.toView().isVisible = false
         }
     }
 
